@@ -69,6 +69,8 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    species: Species;
+    trees: Tree;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -77,6 +79,8 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    species: SpeciesSelect<false> | SpeciesSelect<true>;
+    trees: TreesSelect<false> | TreesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -151,6 +155,43 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "species".
+ */
+export interface Species {
+  id: number;
+  name: string;
+  latinName?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "trees".
+ */
+export interface Tree {
+  id: number;
+  supplyId: string;
+  species: number | Species;
+  lat: number;
+  lon: number;
+  storeNumber?: number | null;
+  details?: {
+    dataOwner?: string | null;
+    height?: number | null;
+    trunkHeight?: number | null;
+    trunkDiameter?: number | null;
+    crownDiameter?: number | null;
+    district?: string | null;
+    street?: string | null;
+    streetNumber?: string | null;
+    parcelNumber?: string | null;
+  };
+  photo?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -163,6 +204,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'species';
+        value: number | Species;
+      } | null)
+    | ({
+        relationTo: 'trees';
+        value: number | Tree;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -238,6 +287,43 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "species_select".
+ */
+export interface SpeciesSelect<T extends boolean = true> {
+  name?: T;
+  latinName?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "trees_select".
+ */
+export interface TreesSelect<T extends boolean = true> {
+  supplyId?: T;
+  species?: T;
+  lat?: T;
+  lon?: T;
+  storeNumber?: T;
+  details?:
+    | T
+    | {
+        dataOwner?: T;
+        height?: T;
+        trunkHeight?: T;
+        trunkDiameter?: T;
+        crownDiameter?: T;
+        district?: T;
+        street?: T;
+        streetNumber?: T;
+        parcelNumber?: T;
+      };
+  photo?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
