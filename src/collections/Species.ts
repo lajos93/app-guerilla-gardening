@@ -14,6 +14,15 @@ export const Species: CollectionConfig = {
   },
   fields: [
     {
+      name: 'bpId', // <-- your original ID here
+      type: 'text',
+      required: true,
+      unique: true,
+      admin: {
+        description: 'Original ID from JSON data',
+      },
+    },
+    {
       name: 'name',
       type: 'text',
       required: true,

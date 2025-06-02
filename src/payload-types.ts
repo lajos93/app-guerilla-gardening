@@ -159,6 +159,10 @@ export interface Media {
  */
 export interface Species {
   id: number;
+  /**
+   * Original ID from JSON data
+   */
+  bpId: string;
   name: string;
   latinName?: string | null;
   updatedAt: string;
@@ -185,6 +189,7 @@ export interface Tree {
     street?: string | null;
     streetNumber?: string | null;
     parcelNumber?: string | null;
+    fokertId?: string | null;
   };
   photo?: (number | null) | Media;
   updatedAt: string;
@@ -293,6 +298,7 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "species_select".
  */
 export interface SpeciesSelect<T extends boolean = true> {
+  bpId?: T;
   name?: T;
   latinName?: T;
   updatedAt?: T;
@@ -320,6 +326,7 @@ export interface TreesSelect<T extends boolean = true> {
         street?: T;
         streetNumber?: T;
         parcelNumber?: T;
+        fokertId?: T;
       };
   photo?: T;
   updatedAt?: T;

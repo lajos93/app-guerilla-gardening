@@ -49,6 +49,7 @@ export const Trees: CollectionConfig = {
         { name: 'street', type: 'text' },
         { name: 'streetNumber', type: 'text' },
         { name: 'parcelNumber', type: 'text' },
+        { name: 'fokertId', type: 'text' },
       ],
     },
     {
