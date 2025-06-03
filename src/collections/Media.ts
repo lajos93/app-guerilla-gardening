@@ -5,6 +5,9 @@ export const Media: CollectionConfig = {
   access: {
     read: () => true,
   },
+  upload: {
+    disableLocalStorage: true, // Disable local storage to use S3
+  },
   fields: [
     {
       name: 'alt',
@@ -12,5 +15,4 @@ export const Media: CollectionConfig = {
       required: true,
     },
   ],
-  upload: true,
 }
