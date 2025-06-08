@@ -14,7 +14,9 @@
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "scrape": "node scripts/scrape/fetchTrees.js",
-    "import": "node scripts/import/import.js"
+    "import": "node scripts/import/import.js",
+    "compressImage": "node scripts/compressImage/index.js",
+    "importImage": "node scripts/import/importImage.js"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.40.0",
