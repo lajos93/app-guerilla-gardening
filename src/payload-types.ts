@@ -205,6 +205,11 @@ export interface Page {
   id: number;
   title: string;
   slug: string;
+  hero: {
+    title: string;
+    subtitle?: string | null;
+    image?: (number | null) | Media;
+  };
   content?: {
     root: {
       type: string;
@@ -225,6 +230,17 @@ export interface Page {
     metaTitle?: string | null;
     metaDescription?: string | null;
   };
+  layout?:
+    | {
+        latitude: number;
+        longitude: number;
+        zoomLevel: number;
+        markerLabel?: string | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'map';
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -376,6 +392,13 @@ export interface TreesSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  hero?:
+    | T
+    | {
+        title?: T;
+        subtitle?: T;
+        image?: T;
+      };
   content?: T;
   published?: T;
   seo?:
@@ -383,6 +406,20 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         metaTitle?: T;
         metaDescription?: T;
+      };
+  layout?:
+    | T
+    | {
+        map?:
+          | T
+          | {
+              latitude?: T;
+              longitude?: T;
+              zoomLevel?: T;
+              markerLabel?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;

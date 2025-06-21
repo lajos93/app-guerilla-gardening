@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated } from '../access/authenticated'
 import { authenticatedOrPublished } from '../access/authenticatedOrPublished'
+import MapBlock from '../blocks/MapBlock/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -16,13 +17,43 @@ export const Pages: CollectionConfig<'pages'> = {
   },
   defaultPopulate: {
     title: true,
-    slug: true,
+    
   },
   fields: [
     {
       name: 'title',
       type: 'text',
       required: true,
+    },
+    {
+      name: 'slug',
+      type: 'text',
+      required: true,
+      unique: true,
+      label: 'Slug',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'hero',
+      type: 'group',
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'subtitle',
+          type: 'text',
+        },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+        },
+      ],
     },
     {
       name: 'content',
@@ -47,6 +78,14 @@ export const Pages: CollectionConfig<'pages'> = {
           name: 'metaDescription',
           type: 'textarea',
         },
+      ],
+    },
+       {
+      name: 'layout',
+      type: 'blocks',
+      blocks: [
+        MapBlock,
+      
       ],
     },
   ],
