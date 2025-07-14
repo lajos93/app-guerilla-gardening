@@ -18,6 +18,7 @@ Install dependencies and start the app:
 3. `Open your browser at http://localhost:3000`
 
 ## Features (in development)
+- User Friendly Design
 - Supabase database with data imported via a script.
 - User registration and accounts (coming soon).
 - Adding trees, showing ripeness stages.
