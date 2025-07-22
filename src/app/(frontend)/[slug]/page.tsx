@@ -30,9 +30,8 @@ export default async function Page({ params }: Props) {
   }
 
   return (
-    <article>
-      <h1>{page.title || 'Untitled'}</h1>
+    <>
       <RenderBlocks blocks={page.layout} />
-    </article>
+    </>
   )
 }

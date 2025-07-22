@@ -1,0 +1,26 @@
+@import 'tailwindcss';
+@import './fonts.css';
+
+@theme {
+  --color-primary: #4f5f21;
+
+  --color-primary-100: #eef2e0;
+  --color-primary-500: #4f5f21;
+  --color-primary-700: #3a4518;
+
+  --color-black: #161616;
+
+  --color-surface-500: #e9e9db;
+
+  --color-muted-500: #646463;
+
+  /* Fonts */
+  --font-californian: 'Californian-FB', serif;
+
+  /* Text Stroke */
+  --text-stroke-white: -1px -1px 0 #dad5d3, 1px -1px 0 #dad5d3, -1px 1px 0 #dad5d3, 1px 1px 0 #dad5d3;
+}
+
+.text-stroke {
+  text-shadow: var(--text-stroke-white);
+}

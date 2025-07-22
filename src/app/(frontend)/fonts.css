@@ -1,0 +1,20 @@
+@font-face {
+  font-family: 'Bahnschrift';
+  src: url('/fonts/Bahnschrift.ttf') format('truetype');
+  font-weight: 200 700; 
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Californian-FB';
+  src: url('/fonts/Californian-FB.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Californian-FB';
+  src: url('/fonts/Californian-FB-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}

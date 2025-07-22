@@ -205,41 +205,39 @@ export interface Page {
   id: number;
   title: string;
   slug: string;
-  hero: {
-    title: string;
-    subtitle?: string | null;
-    image?: (number | null) | Media;
-  };
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
   published?: boolean | null;
   seo?: {
     metaTitle?: string | null;
     metaDescription?: string | null;
   };
   layout?:
-    | {
-        latitude: number;
-        longitude: number;
-        zoomLevel: number;
-        markerLabel?: string | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'map';
-      }[]
+    | (
+        | {
+            backgroundImage: number | Media;
+            title: string;
+            subtitle?: string | null;
+            ctaButtons?:
+              | {
+                  label?: string | null;
+                  target?: string | null;
+                  style?: ('primary' | 'secondary') | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'hero';
+          }
+        | {
+            latitude: number;
+            longitude: number;
+            zoomLevel: number;
+            markerLabel?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'map';
+          }
+      )[]
     | null;
   updatedAt: string;
   createdAt: string;
@@ -392,14 +390,6 @@ export interface TreesSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
-  hero?:
-    | T
-    | {
-        title?: T;
-        subtitle?: T;
-        image?: T;
-      };
-  content?: T;
   published?: T;
   seo?:
     | T
@@ -410,6 +400,23 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
+        hero?:
+          | T
+          | {
+              backgroundImage?: T;
+              title?: T;
+              subtitle?: T;
+              ctaButtons?:
+                | T
+                | {
+                    label?: T;
+                    target?: T;
+                    style?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
         map?:
           | T
           | {

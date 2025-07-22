@@ -17,7 +17,6 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 // Environment variables for S3 storage
-
 const bucket = process.env.S3_BUCKET
 if (!bucket) throw new Error('S3_BUCKET env var is required')
 

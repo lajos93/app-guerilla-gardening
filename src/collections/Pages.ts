@@ -2,22 +2,19 @@ import type { CollectionConfig } from 'payload'
 import { authenticated } from '../access/authenticated'
 import { authenticatedOrPublished } from '../access/authenticatedOrPublished'
 import MapBlock from '../blocks/MapBlock/config'
+import HeroBlock from '../blocks/HeroBlock/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
   admin: {
-     defaultColumns: ['title', 'slug', 'updatedAt'],
-       useAsTitle: 'title',
+    defaultColumns: ['title', 'slug', 'updatedAt'],
+    useAsTitle: 'title',
   },
   access: {
     create: authenticated,
     delete: authenticated,
     read: authenticatedOrPublished,
     update: authenticated,
-  },
-  defaultPopulate: {
-    title: true,
-    
   },
   fields: [
     {
@@ -34,30 +31,6 @@ export const Pages: CollectionConfig<'pages'> = {
       admin: {
         position: 'sidebar',
       },
-    },
-    {
-      name: 'hero',
-      type: 'group',
-      fields: [
-        {
-          name: 'title',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'subtitle',
-          type: 'text',
-        },
-        {
-          name: 'image',
-          type: 'upload',
-          relationTo: 'media',
-        },
-      ],
-    },
-    {
-      name: 'content',
-      type: 'richText',
     },
     {
       name: 'published',
@@ -80,13 +53,10 @@ export const Pages: CollectionConfig<'pages'> = {
         },
       ],
     },
-       {
+    {
       name: 'layout',
       type: 'blocks',
-      blocks: [
-        MapBlock,
-      
-      ],
+      blocks: [HeroBlock, MapBlock],
     },
   ],
 }
