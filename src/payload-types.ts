@@ -229,6 +229,38 @@ export interface Page {
             blockType: 'hero';
           }
         | {
+            backgroundColor: string;
+            title: string;
+            titleHighlight?: string | null;
+            richDescription?: {
+              root: {
+                type: string;
+                children: {
+                  type: string;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
+            missionTitle?: string | null;
+            missionItems?:
+              | {
+                  icon: number | Media;
+                  title?: string | null;
+                  description?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'about';
+          }
+        | {
             latitude: number;
             longitude: number;
             zoomLevel: number;
@@ -412,6 +444,25 @@ export interface PagesSelect<T extends boolean = true> {
                     label?: T;
                     target?: T;
                     style?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        about?:
+          | T
+          | {
+              backgroundColor?: T;
+              title?: T;
+              titleHighlight?: T;
+              richDescription?: T;
+              missionTitle?: T;
+              missionItems?:
+                | T
+                | {
+                    icon?: T;
+                    title?: T;
+                    description?: T;
                     id?: T;
                   };
               id?: T;

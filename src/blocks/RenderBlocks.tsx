@@ -1,6 +1,7 @@
 import React from 'react'
 import { MapBlock } from './MapBlock'
 import { HeroBlock } from './HeroBlock'
+import { AboutBlock } from './AboutBlock' // 🔹 ÚJ
 
 type MapBlockType = {
   blockType: 'map'
@@ -27,7 +28,25 @@ type HeroBlockType = {
   }[]
 }
 
-type Block = MapBlockType | HeroBlockType
+type AboutBlockType = {
+  blockType: 'about' // 🔹 ÚJ
+  backgroundColor: string
+  title: string
+  titleHighlight?: string
+  richDescription?: string
+  missionTitle?: string
+  missionItems?: {
+    icon: {
+      url: string
+      width: number
+      height: number
+    }
+    title: string
+    description: string
+  }[]
+}
+
+type Block = MapBlockType | HeroBlockType | AboutBlockType // 🔹 Bővítve
 
 export const RenderBlocks: React.FC<{ blocks: Block[] }> = ({ blocks }) => {
   if (!blocks || !Array.isArray(blocks) || blocks.length === 0) return null
@@ -56,6 +75,20 @@ export const RenderBlocks: React.FC<{ blocks: Block[] }> = ({ blocks }) => {
                   title={block.title}
                   subtitle={block.subtitle}
                   ctaButtons={block.ctaButtons}
+                />
+              </div>
+            )
+
+          case 'about': // 🔹 ÚJ blokk renderelése
+            return (
+              <div key={index}>
+                <AboutBlock
+                  backgroundColor={block.backgroundColor}
+                  title={block.title}
+                  titleHighlight={block.titleHighlight}
+                  richDescription={block.richDescription}
+                  missionTitle={block.missionTitle}
+                  missionItems={block.missionItems}
                 />
               </div>
             )

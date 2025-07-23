@@ -3,6 +3,7 @@ import { authenticated } from '../access/authenticated'
 import { authenticatedOrPublished } from '../access/authenticatedOrPublished'
 import MapBlock from '../blocks/MapBlock/config'
 import HeroBlock from '../blocks/HeroBlock/config'
+import AboutBlock from '../blocks/AboutBlock/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -56,7 +57,7 @@ export const Pages: CollectionConfig<'pages'> = {
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [HeroBlock, MapBlock],
+      blocks: [HeroBlock, AboutBlock, MapBlock],
     },
   ],
 }
