@@ -1,7 +1,7 @@
 import React from 'react'
 import { MapBlock } from './MapBlock'
 import { HeroBlock } from './HeroBlock'
-import { AboutBlock } from './AboutBlock' // 🔹 ÚJ
+import { AboutBlock } from './AboutBlock'
 
 type MapBlockType = {
   blockType: 'map'
@@ -29,7 +29,7 @@ type HeroBlockType = {
 }
 
 type AboutBlockType = {
-  blockType: 'about' // 🔹 ÚJ
+  blockType: 'about' //
   backgroundColor: string
   title: string
   titleHighlight?: string
@@ -44,9 +44,10 @@ type AboutBlockType = {
     title: string
     description: string
   }[]
+  showDivider?: boolean
 }
 
-type Block = MapBlockType | HeroBlockType | AboutBlockType // 🔹 Bővítve
+type Block = MapBlockType | HeroBlockType | AboutBlockType //
 
 export const RenderBlocks: React.FC<{ blocks: Block[] }> = ({ blocks }) => {
   if (!blocks || !Array.isArray(blocks) || blocks.length === 0) return null
@@ -79,7 +80,7 @@ export const RenderBlocks: React.FC<{ blocks: Block[] }> = ({ blocks }) => {
               </div>
             )
 
-          case 'about': // 🔹 ÚJ blokk renderelése
+          case 'about': //
             return (
               <div key={index}>
                 <AboutBlock
@@ -89,6 +90,7 @@ export const RenderBlocks: React.FC<{ blocks: Block[] }> = ({ blocks }) => {
                   richDescription={block.richDescription}
                   missionTitle={block.missionTitle}
                   missionItems={block.missionItems}
+                  showDivider={block.showDivider ?? true}
                 />
               </div>
             )

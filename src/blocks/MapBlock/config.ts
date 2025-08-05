@@ -8,6 +8,11 @@ const MapBlock: Block = {
   },
   fields: [
     {
+      name: 'sections',
+      type: 'relationship',
+      relationTo: 'sections',
+    },
+    {
       name: 'latitude',
       type: 'number',
       required: true,

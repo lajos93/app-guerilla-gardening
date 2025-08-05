@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import { ValidationError, type CollectionConfig } from 'payload'
 import { authenticated } from '../access/authenticated'
 import { authenticatedOrPublished } from '../access/authenticatedOrPublished'
 import MapBlock from '../blocks/MapBlock/config'
@@ -26,13 +26,24 @@ export const Pages: CollectionConfig<'pages'> = {
     {
       name: 'slug',
       type: 'text',
-      required: true,
       unique: true,
       label: 'Slug',
       admin: {
+        condition: (data) => !data?.isRoot,
         position: 'sidebar',
       },
     },
+    {
+      name: 'isRoot',
+      type: 'checkbox',
+      label: 'Set as homepage',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: 'If checked, this page will be used as the homepage ("/").',
+      },
+    },
+
     {
       name: 'published',
       type: 'checkbox',
@@ -60,4 +71,51 @@ export const Pages: CollectionConfig<'pages'> = {
       blocks: [HeroBlock, AboutBlock, MapBlock],
     },
   ],
+  hooks: {
+    beforeValidate: [
+      async ({ data }) => {
+        if (!data?.isRoot && !data?.slug) {
+          throw new ValidationError({
+            errors: [
+              {
+                message: 'Slug is required if this page is not set as homepage',
+                path: 'slug',
+              },
+            ],
+          })
+        }
+      },
+    ],
+    beforeChange: [
+      async ({ data, req, operation, originalDoc }) => {
+        if (data.isRoot) {
+          const payload = req.payload
+
+          // look for existing root pages
+          const existing = await payload.find({
+            collection: 'pages',
+            where: {
+              isRoot: { equals: true },
+            },
+          })
+
+          // turn off isRoot for all existing root pages
+          await Promise.all(
+            existing.docs.map(async (doc) => {
+              if (doc.id !== originalDoc?.id) {
+                await payload.update({
+                  collection: 'pages',
+                  id: doc.id,
+                  data: { isRoot: false },
+                  overrideAccess: true,
+                })
+              }
+            }),
+          )
+        }
+
+        return data
+      },
+    ],
+  },
 }

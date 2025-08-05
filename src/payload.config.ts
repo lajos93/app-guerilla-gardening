@@ -12,6 +12,7 @@ import { Media } from './collections/Media'
 import { Species } from './collections/Species'
 import { Trees } from './collections/Trees'
 import { Pages } from './collections/Pages'
+import { Sections } from './collections/Sections'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -36,7 +37,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Species, Trees, Pages],
+  collections: [Users, Media, Species, Trees, Pages, Sections],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

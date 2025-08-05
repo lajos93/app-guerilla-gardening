@@ -72,6 +72,7 @@ export interface Config {
     species: Species;
     trees: Tree;
     pages: Page;
+    sections: Section;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -83,6 +84,7 @@ export interface Config {
     species: SpeciesSelect<false> | SpeciesSelect<true>;
     trees: TreesSelect<false> | TreesSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
+    sections: SectionsSelect<false> | SectionsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -204,7 +206,11 @@ export interface Tree {
 export interface Page {
   id: number;
   title: string;
-  slug: string;
+  slug?: string | null;
+  /**
+   * If checked, this page will be used as the homepage ("/").
+   */
+  isRoot?: boolean | null;
   published?: boolean | null;
   seo?: {
     metaTitle?: string | null;
@@ -248,19 +254,17 @@ export interface Page {
               [k: string]: unknown;
             } | null;
             missionTitle?: string | null;
-            missionItems?:
-              | {
-                  icon: number | Media;
-                  title?: string | null;
-                  description?: string | null;
-                  id?: string | null;
-                }[]
-              | null;
+            missionItems?: (number | Section)[] | null;
+            /**
+             * Toggle to show or hide the divider after this block that connects with the next block.
+             */
+            showDivider?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'about';
           }
         | {
+            sections?: (number | null) | Section;
             latitude: number;
             longitude: number;
             zoomLevel: number;
@@ -271,6 +275,24 @@ export interface Page {
           }
       )[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sections".
+ */
+export interface Section {
+  id: number;
+  title: string;
+  slug: string;
+  published?: boolean | null;
+  icon?: (number | null) | Media;
+  description?: string | null;
+  seo?: {
+    metaTitle?: string | null;
+    metaDescription?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -300,6 +322,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'pages';
         value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'sections';
+        value: number | Section;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -422,6 +448,7 @@ export interface TreesSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  isRoot?: T;
   published?: T;
   seo?:
     | T
@@ -457,20 +484,15 @@ export interface PagesSelect<T extends boolean = true> {
               titleHighlight?: T;
               richDescription?: T;
               missionTitle?: T;
-              missionItems?:
-                | T
-                | {
-                    icon?: T;
-                    title?: T;
-                    description?: T;
-                    id?: T;
-                  };
+              missionItems?: T;
+              showDivider?: T;
               id?: T;
               blockName?: T;
             };
         map?:
           | T
           | {
+              sections?: T;
               latitude?: T;
               longitude?: T;
               zoomLevel?: T;
@@ -478,6 +500,25 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sections_select".
+ */
+export interface SectionsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  published?: T;
+  icon?: T;
+  description?: T;
+  seo?:
+    | T
+    | {
+        metaTitle?: T;
+        metaDescription?: T;
       };
   updatedAt?: T;
   createdAt?: T;

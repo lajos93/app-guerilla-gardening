@@ -25,7 +25,7 @@ export default async function Page({ params }: Props) {
 
   const page = result.docs[0]
 
-  if (!page) {
+  if (!page || page.isRoot) {
     return <h1>Page not found</h1>
   }
 

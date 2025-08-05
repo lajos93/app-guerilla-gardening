@@ -28,23 +28,19 @@ const AboutBlock: Block = {
     },
     {
       name: 'missionItems',
-      type: 'array',
-      fields: [
-        {
-          name: 'icon',
-          type: 'upload',
-          relationTo: 'media',
-          required: true,
-        },
-        {
-          name: 'title',
-          type: 'text',
-        },
-        {
-          name: 'description',
-          type: 'text',
-        },
-      ],
+      type: 'relationship',
+      relationTo: 'sections',
+      hasMany: true,
+    },
+    {
+      name: 'showDivider',
+      type: 'checkbox',
+      label: 'Show divider',
+      defaultValue: true,
+      admin: {
+        description:
+          'Toggle to show or hide the divider after this block that connects with the next block.',
+      },
     },
   ],
 }
