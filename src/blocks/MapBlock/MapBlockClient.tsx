@@ -2,6 +2,7 @@
 
 import { MapContainer, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
+import './style.css'
 
 interface MapBlockClientProps {
   center: [number, number]
@@ -14,6 +15,7 @@ export function MapBlockClient({ center, zoom, height }: MapBlockClientProps) {
     <MapContainer
       center={center}
       zoom={zoom}
+      minZoom={zoom}
       scrollWheelZoom={true}
       style={{ height: height + 'px', width: '100%' }}
     >
