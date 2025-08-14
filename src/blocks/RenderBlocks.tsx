@@ -1,99 +1,52 @@
 import React from 'react'
+
 import { MapBlock } from './MapBlock'
 import { HeroBlock } from './HeroBlock'
 import { AboutBlock } from './AboutBlock'
+import { MissionsBlock } from './MissionsBlock'
+import InteractiveMapWithMissions from './InteractiveMapWithMissionsBlock'
 
-type MapBlockType = {
-  blockType: 'map'
-  latitude: number
-  longitude: number
-  zoomLevel: number
-  markerLabel?: string
+import type { HeroBlockType } from './HeroBlock/types'
+import type { MapBlockType } from './MapBlock/types'
+import type { AboutBlockType } from './AboutBlock/types'
+import type { MissionsBlockType } from './MissionsBlock/types'
+import type { InteractiveMapWithMissionsType } from './InteractiveMapWithMissionsBlock/types'
+
+type BlockMap = {
+  map: MapBlockType
+  hero: HeroBlockType
+  about: AboutBlockType
+  missions: MissionsBlockType
+  interactiveMapWithMissions: InteractiveMapWithMissionsType
 }
 
-type HeroBlockType = {
-  blockType: 'hero'
-  backgroundImage: {
-    url: string
-    width: number
-    height: number
-  }
-  title: string
-  subtitle?: string
-  subtitleSize?: 'xs' | 's' | 'm' | 'l' | 'xl'
-  ctaButtons: {
-    label: string
-    target: string
-    style: 'primary' | 'secondary'
-  }[]
+export type Block = BlockMap[keyof BlockMap]
+
+interface RenderBlocksProps {
+  blocks: Block[]
 }
 
-type AboutBlockType = {
-  blockType: 'about' //
-  backgroundColor: string
-  title: string
-  titleHighlight?: string
-  richDescription?: string
-  missionTitle?: string
-  missionItems?: {
-    icon: {
-      url: string
-      width: number
-      height: number
-    }
-    title: string
-    description: string
-  }[]
-  showDivider?: boolean
-}
-
-type Block = MapBlockType | HeroBlockType | AboutBlockType //
-
-export const RenderBlocks: React.FC<{ blocks: Block[] }> = ({ blocks }) => {
-  if (!blocks || !Array.isArray(blocks) || blocks.length === 0) return null
+export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
+  if (!blocks.length) return null
 
   return (
     <>
       {blocks.map((block, index) => {
         switch (block.blockType) {
           case 'map':
-            return (
-              <div key={index} className="my-16">
-                <MapBlock
-                  latitude={block.latitude}
-                  longitude={block.longitude}
-                  zoomLevel={block.zoomLevel}
-                  markerLabel={block.markerLabel ?? undefined}
-                />
-              </div>
-            )
+            return <MapBlock key={index} {...block} />
 
           case 'hero':
-            return (
-              <div key={index}>
-                <HeroBlock
-                  backgroundImage={block.backgroundImage}
-                  title={block.title}
-                  subtitle={block.subtitle}
-                  ctaButtons={block.ctaButtons}
-                />
-              </div>
-            )
+            return <HeroBlock key={index} {...block} />
 
-          case 'about': //
-            return (
-              <div key={index}>
-                <AboutBlock
-                  backgroundColor={block.backgroundColor}
-                  title={block.title}
-                  titleHighlight={block.titleHighlight}
-                  richDescription={block.richDescription}
-                  missionTitle={block.missionTitle}
-                  missionItems={block.missionItems}
-                  showDivider={block.showDivider ?? true}
-                />
-              </div>
-            )
+          case 'about':
+            return <AboutBlock key={index} {...block} />
+
+          case 'missions':
+            return <MissionsBlock key={index} {...block} />
+
+          case 'interactiveMapWithMissions':
+            return <InteractiveMapWithMissions key={index} {...block} />
 
           default:
             return null

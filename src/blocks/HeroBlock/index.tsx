@@ -1,22 +1,14 @@
 // src/blocks/HeroBlock/HeroBlock.tsx
 import Image from 'next/image'
+import type { HeroType } from './types'
 
-type HeroBlockProps = {
-  backgroundImage: {
-    url: string
-    width: number
-    height: number
-  }
-  title: string
-  subtitle?: string
-  ctaButtons: {
-    label: string
-    target: string
-    style: 'primary' | 'secondary'
-  }[]
-}
-
-export const HeroBlock = ({ backgroundImage, title, subtitle, ctaButtons }: HeroBlockProps) => {
+export const HeroBlock = ({
+  backgroundImage,
+  lowResBackgroundImageBase64,
+  title,
+  subtitle,
+  ctaButtons,
+}: HeroType) => {
   const aspectRatio = backgroundImage.width / backgroundImage.height
 
   return (
@@ -36,6 +28,8 @@ export const HeroBlock = ({ backgroundImage, title, subtitle, ctaButtons }: Hero
           fill
           className="object-cover"
           priority
+          placeholder="blur"
+          blurDataURL={lowResBackgroundImageBase64}
         />
 
         {/* Overlay Content */}

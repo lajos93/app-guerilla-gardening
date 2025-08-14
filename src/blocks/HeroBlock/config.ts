@@ -10,6 +10,10 @@ const HeroBlock: Block = {
       required: true,
     },
     {
+      name: 'lowResBackgroundImageBase64',
+      type: 'text',
+    },
+    {
       name: 'title',
       type: 'text',
       required: true,

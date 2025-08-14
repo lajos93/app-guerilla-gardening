@@ -220,6 +220,7 @@ export interface Page {
     | (
         | {
             backgroundImage: number | Media;
+            lowResBackgroundImageBase64?: string | null;
             title: string;
             subtitle?: string | null;
             ctaButtons?:
@@ -253,17 +254,18 @@ export interface Page {
               };
               [k: string]: unknown;
             } | null;
-            missionTitle?: string | null;
-            missionItems?: (number | Section)[] | null;
-            /**
-             * Toggle to show or hide the divider after this block that connects with the next block.
-             */
-            showDivider?: boolean | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'about';
           }
         | {
+            titleBackgroundColor?: string | null;
+            titleTextColor?: string | null;
+            extendedTitleTextColor?: string | null;
+            /**
+             * Toggle to show or hide the divider after this block that connects with the next block.
+             */
+            showDivider?: boolean | null;
             sections?: (number | null) | Section;
             latitude: number;
             longitude: number;
@@ -272,6 +274,46 @@ export interface Page {
             id?: string | null;
             blockName?: string | null;
             blockType: 'map';
+          }
+        | {
+            backgroundColor: string;
+            missionTitle?: string | null;
+            missionItems?: (number | Section)[] | null;
+            /**
+             * Toggle to show or hide the divider after this block that connects with the next block.
+             */
+            showDivider?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'missions';
+          }
+        | {
+            missions: {
+              backgroundColor: string;
+              missionTitle?: string | null;
+              missionItems?: (number | Section)[] | null;
+              /**
+               * Toggle to show or hide the divider after this block that connects with the next block.
+               */
+              showDivider?: boolean | null;
+            };
+            map: {
+              titleBackgroundColor?: string | null;
+              titleTextColor?: string | null;
+              extendedTitleTextColor?: string | null;
+              /**
+               * Toggle to show or hide the divider after this block that connects with the next block.
+               */
+              showDivider?: boolean | null;
+              sections?: (number | null) | Section;
+              latitude: number;
+              longitude: number;
+              zoomLevel: number;
+              markerLabel?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'interactiveMapWithMissions';
           }
       )[]
     | null;
@@ -285,7 +327,12 @@ export interface Page {
 export interface Section {
   id: number;
   title: string;
+  extendedTitle?: string | null;
   slug: string;
+  /**
+   * Only one section can be set as default. This will be used for the default section in the app.
+   */
+  isDefault?: boolean | null;
   published?: boolean | null;
   icon?: (number | null) | Media;
   description?: string | null;
@@ -463,6 +510,7 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               backgroundImage?: T;
+              lowResBackgroundImageBase64?: T;
               title?: T;
               subtitle?: T;
               ctaButtons?:
@@ -483,20 +531,58 @@ export interface PagesSelect<T extends boolean = true> {
               title?: T;
               titleHighlight?: T;
               richDescription?: T;
-              missionTitle?: T;
-              missionItems?: T;
-              showDivider?: T;
               id?: T;
               blockName?: T;
             };
         map?:
           | T
           | {
+              titleBackgroundColor?: T;
+              titleTextColor?: T;
+              extendedTitleTextColor?: T;
+              showDivider?: T;
               sections?: T;
               latitude?: T;
               longitude?: T;
               zoomLevel?: T;
               markerLabel?: T;
+              id?: T;
+              blockName?: T;
+            };
+        missions?:
+          | T
+          | {
+              backgroundColor?: T;
+              missionTitle?: T;
+              missionItems?: T;
+              showDivider?: T;
+              id?: T;
+              blockName?: T;
+            };
+        interactiveMapWithMissions?:
+          | T
+          | {
+              missions?:
+                | T
+                | {
+                    backgroundColor?: T;
+                    missionTitle?: T;
+                    missionItems?: T;
+                    showDivider?: T;
+                  };
+              map?:
+                | T
+                | {
+                    titleBackgroundColor?: T;
+                    titleTextColor?: T;
+                    extendedTitleTextColor?: T;
+                    showDivider?: T;
+                    sections?: T;
+                    latitude?: T;
+                    longitude?: T;
+                    zoomLevel?: T;
+                    markerLabel?: T;
+                  };
               id?: T;
               blockName?: T;
             };
@@ -510,7 +596,9 @@ export interface PagesSelect<T extends boolean = true> {
  */
 export interface SectionsSelect<T extends boolean = true> {
   title?: T;
+  extendedTitle?: T;
   slug?: T;
+  isDefault?: T;
   published?: T;
   icon?: T;
   description?: T;

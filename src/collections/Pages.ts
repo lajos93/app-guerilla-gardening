@@ -1,9 +1,24 @@
+import sharp from 'sharp'
+import fs from 'fs'
+import path from 'path'
+
 import { ValidationError, type CollectionConfig } from 'payload'
 import { authenticated } from '../access/authenticated'
 import { authenticatedOrPublished } from '../access/authenticatedOrPublished'
 import MapBlock from '../blocks/MapBlock/config'
 import HeroBlock from '../blocks/HeroBlock/config'
 import AboutBlock from '../blocks/AboutBlock/config'
+import MissionsBlock from '../blocks/MissionsBlock/config'
+import InteractiveMapWithMissions from '../blocks/InteractiveMapWithMissionsBlock/config'
+import { Block } from '../blocks/RenderBlocks'
+import { HeroBlockType } from '../blocks/HeroBlock/types'
+
+async function urlToBase64(url: string) {
+  const res = await fetch(url)
+  const arrayBuffer = await res.arrayBuffer()
+  const buffer = Buffer.from(arrayBuffer)
+  return buffer.toString('base64')
+}
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -68,7 +83,7 @@ export const Pages: CollectionConfig<'pages'> = {
     {
       name: 'layout',
       type: 'blocks',
-      blocks: [HeroBlock, AboutBlock, MapBlock],
+      blocks: [HeroBlock, AboutBlock, MapBlock, MissionsBlock, InteractiveMapWithMissions],
     },
   ],
   hooks: {

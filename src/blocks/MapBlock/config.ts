@@ -1,4 +1,5 @@
 import type { Block } from 'payload'
+import { MapBlockField } from './fields'
 
 const MapBlock: Block = {
   slug: 'map',
@@ -6,37 +7,7 @@ const MapBlock: Block = {
     singular: 'Map',
     plural: 'Maps',
   },
-  fields: [
-    {
-      name: 'sections',
-      type: 'relationship',
-      relationTo: 'sections',
-    },
-    {
-      name: 'latitude',
-      type: 'number',
-      required: true,
-      label: 'Latitude',
-    },
-    {
-      name: 'longitude',
-      type: 'number',
-      required: true,
-      label: 'Longitude',
-    },
-    {
-      name: 'zoomLevel',
-      type: 'number',
-      required: true,
-      label: 'Zoom Level',
-      defaultValue: 12,
-    },
-    {
-      name: 'markerLabel',
-      type: 'text',
-      label: 'Marker Label',
-    },
-  ],
+  fields: MapBlockField,
 }
 
 export default MapBlock

@@ -1,5 +1,11 @@
-const BlockDivider = ({ fill = '#acacac' }: { fill?: string }) => (
-  <div className="w-full overflow-hidden leading-none -mt-[1px]">
+const BlockDivider = ({
+  fill = '#acacac',
+  style,
+}: {
+  fill?: string
+  style?: React.CSSProperties
+}) => (
+  <div className="w-full overflow-hidden leading-none -mt-[1px]" style={style}>
     <svg
       viewBox="0 0 2047 81.82"
       xmlns="http://www.w3.org/2000/svg"

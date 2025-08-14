@@ -6,15 +6,16 @@ import 'leaflet/dist/leaflet.css'
 interface MapBlockClientProps {
   center: [number, number]
   zoom: number
+  height?: number
 }
 
-export function MapBlockClient({ center, zoom }: MapBlockClientProps) {
+export function MapBlockClient({ center, zoom, height }: MapBlockClientProps) {
   return (
     <MapContainer
       center={center}
       zoom={zoom}
       scrollWheelZoom={true}
-      style={{ height: '500px', width: '100%' }}
+      style={{ height: height + 'px', width: '100%' }}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
     </MapContainer>
