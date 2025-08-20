@@ -34,7 +34,7 @@ export const HeroBlock = ({
 
         {/* Overlay Content */}
         <div className="absolute inset-0 flex flex-col items-center justify-start text-center px-4 text-white z-10 pt-[4%]">
-          <h1 className="text-4xl text-primary md:text-[120px]">{title}</h1>
+          <h1 className="text-4xl text-primary md:text-[134px]">{title}</h1>
           {subtitle && <h2 className={`text-xl -mt-2 md:text-[50px] text-primary`}>{subtitle}</h2>}
           <div className="mt-2 flex flex-col md:flex-row gap-6 font-californian">
             {ctaButtons?.map((btn, i) => (

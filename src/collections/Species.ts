@@ -8,10 +8,12 @@ export const Species: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
+    group: 'Tree',
   },
   access: {
     read: () => true,
   },
+
   fields: [
     {
       name: 'bpId', // <-- your original ID here
@@ -31,6 +33,13 @@ export const Species: CollectionConfig = {
     {
       name: 'latinName',
       type: 'text',
+    },
+
+    {
+      name: 'category',
+      type: 'relationship',
+      relationTo: 'species-categories',
+      // required:true
     },
   ],
 }

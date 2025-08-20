@@ -73,6 +73,8 @@ export interface Config {
     trees: Tree;
     pages: Page;
     sections: Section;
+    'species-categories': SpeciesCategory;
+    'category-groups': CategoryGroup;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -85,6 +87,8 @@ export interface Config {
     trees: TreesSelect<false> | TreesSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     sections: SectionsSelect<false> | SectionsSelect<true>;
+    'species-categories': SpeciesCategoriesSelect<false> | SpeciesCategoriesSelect<true>;
+    'category-groups': CategoryGroupsSelect<false> | CategoryGroupsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -169,6 +173,29 @@ export interface Species {
   bpId: string;
   name: string;
   latinName?: string | null;
+  category?: (number | null) | SpeciesCategory;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "species-categories".
+ */
+export interface SpeciesCategory {
+  id: number;
+  name: string;
+  latinName: string;
+  group?: (number | null) | CategoryGroup;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "category-groups".
+ */
+export interface CategoryGroup {
+  id: number;
+  name: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -373,6 +400,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'sections';
         value: number | Section;
+      } | null)
+    | ({
+        relationTo: 'species-categories';
+        value: number | SpeciesCategory;
+      } | null)
+    | ({
+        relationTo: 'category-groups';
+        value: number | CategoryGroup;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -457,6 +492,7 @@ export interface SpeciesSelect<T extends boolean = true> {
   bpId?: T;
   name?: T;
   latinName?: T;
+  category?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -608,6 +644,26 @@ export interface SectionsSelect<T extends boolean = true> {
         metaTitle?: T;
         metaDescription?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "species-categories_select".
+ */
+export interface SpeciesCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  latinName?: T;
+  group?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "category-groups_select".
+ */
+export interface CategoryGroupsSelect<T extends boolean = true> {
+  name?: T;
   updatedAt?: T;
   createdAt?: T;
 }

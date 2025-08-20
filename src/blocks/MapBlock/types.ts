@@ -1,16 +1,21 @@
 import type { MissionItem } from '../MissionsBlock/types'
 
-export type MapType = {
+export type MapBlocKHeaderType = {
   titleBackgroundColor: string
   titleTextColor?: string
   extendedTitleTextColor?: string
   showDivider?: boolean
   activeMission?: MissionItem | null
+  markerLabel?: string
+}
+
+export type MapBlockClientType = {
   latitude: number
   longitude: number
   zoomLevel: number
-  markerLabel?: string
 }
+
+export type MapType = {} & MapBlocKHeaderType & MapBlockClientType
 
 export type MapBlockType = {
   blockType: 'map'

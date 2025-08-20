@@ -13,6 +13,8 @@ import { Species } from './collections/Species'
 import { Trees } from './collections/Trees'
 import { Pages } from './collections/Pages'
 import { Sections } from './collections/Sections'
+import { SpeciesCategories } from './collections/Species-Categories'
+import { CategoryGroups } from './collections/Category-Groups'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -37,7 +39,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Species, Trees, Pages, Sections],
+  collections: [Users, Media, Species, Trees, Pages, Sections, SpeciesCategories, CategoryGroups],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

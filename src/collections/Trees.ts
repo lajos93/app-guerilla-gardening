@@ -9,6 +9,9 @@ export const Trees: CollectionConfig = {
   access: {
     read: () => true,
   },
+  admin: {
+    group: 'Tree',
+  },
   fields: [
     {
       name: 'supplyId',
