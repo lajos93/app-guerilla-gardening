@@ -1,12 +1,10 @@
 import React from 'react'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
-import { RenderBlocks } from '../../../blocks/RenderBlocks'
+import { Block, RenderBlocks } from '../../../blocks/RenderBlocks'
 
 type Props = {
-  params: {
-    slug: string
-  }
+  params: Promise<{ slug: string }>
 }
 
 export default async function Page({ params }: Props) {
@@ -31,7 +29,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <>
-      <RenderBlocks blocks={page.layout} />
+      <RenderBlocks blocks={page.layout as Block[]} />
     </>
   )
 }

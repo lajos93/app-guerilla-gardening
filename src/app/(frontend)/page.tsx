@@ -1,6 +1,6 @@
 import { getPayload } from 'payload'
 import config from '@/payload.config'
-import { RenderBlocks } from '../../blocks/RenderBlocks'
+import { Block, RenderBlocks } from '../../blocks/RenderBlocks'
 
 export default async function HomePage() {
   const payload = await getPayload({ config })
@@ -23,7 +23,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <RenderBlocks blocks={page.layout} />
+      <RenderBlocks blocks={page.layout as Block[]} />
     </>
   )
 }
