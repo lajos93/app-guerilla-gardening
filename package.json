@@ -27,6 +27,8 @@
     "@payloadcms/ui": "3.40.0",
     "@supabase/supabase-js": "^2.49.8",
     "@tailwindcss/postcss": "^4.1.11",
+    "@tanstack/react-query": "^5.85.5",
+    "@tanstack/react-query-devtools": "^5.85.5",
     "axios": "^1.9.0",
     "cross-env": "^7.0.3",
     "dotenv": "^16.5.0",
@@ -38,10 +40,12 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-leaflet": "^5.0.0",
+    "react-leaflet-cluster": "^3.1.1",
     "sharp": "0.32.6"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
+    "@types/express": "^5.0.3",
     "@types/leaflet": "^1.9.18",
     "@types/node": "^22.5.4",
     "@types/react": "19.1.0",

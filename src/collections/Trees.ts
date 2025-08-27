@@ -1,4 +1,6 @@
 import type { CollectionConfig } from 'payload'
+import groupByCountyHandler from '../endpoints/groupByCountyHandler'
+import treesLightHandler from '../endpoints/treesLightHandler'
 
 export const Trees: CollectionConfig = {
   slug: 'trees',
@@ -16,7 +18,6 @@ export const Trees: CollectionConfig = {
     {
       name: 'supplyId',
       type: 'text',
-      required: true,
       unique: true,
     },
     {
@@ -25,6 +26,7 @@ export const Trees: CollectionConfig = {
       relationTo: 'species',
       required: true,
     },
+
     {
       name: 'lat',
       type: 'number',
@@ -34,6 +36,11 @@ export const Trees: CollectionConfig = {
       name: 'lon',
       type: 'number',
       required: true,
+    },
+    {
+      name: 'county',
+      type: 'text',
+      label: 'County / Region',
     },
     {
       name: 'storeNumber',
@@ -59,6 +66,18 @@ export const Trees: CollectionConfig = {
       name: 'photo',
       type: 'upload',
       relationTo: 'media',
+    },
+  ],
+  endpoints: [
+    {
+      path: '/groupByCounty',
+      method: 'get',
+      handler: groupByCountyHandler,
+    },
+    {
+      path: '/treesLight',
+      method: 'get',
+      handler: treesLightHandler,
     },
   ],
 }

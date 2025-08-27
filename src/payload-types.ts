@@ -205,10 +205,11 @@ export interface CategoryGroup {
  */
 export interface Tree {
   id: number;
-  supplyId: string;
+  supplyId?: string | null;
   species: number | Species;
   lat: number;
   lon: number;
+  county?: string | null;
   storeNumber?: number | null;
   details?: {
     dataOwner?: string | null;
@@ -505,6 +506,7 @@ export interface TreesSelect<T extends boolean = true> {
   species?: T;
   lat?: T;
   lon?: T;
+  county?: T;
   storeNumber?: T;
   details?:
     | T
