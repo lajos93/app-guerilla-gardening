@@ -1,4 +1,4 @@
-# Fruit Commando
+# GreenGuerilla
 Fruit Commando is a community app designed to inspire and unite people who want to break free from the urban concrete and bring more nature into their lives. Let’s plant trees, harvest together, and create green spaces where nature can thrive again.
 
 ## Project link
