@@ -1,17 +1,17 @@
 'use client'
 
 import { useState } from 'react'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-import { useQuery } from '@tanstack/react-query'
+import { MapContainer, TileLayer /* Marker, Popup */ } from 'react-leaflet'
+/* import { useQuery } from '@tanstack/react-query' */
 import 'leaflet/dist/leaflet.css'
-import L from 'leaflet'
+/* import L from 'leaflet' */
 import './style.css'
-import { TreeType } from './types'
-import MarkerClusterGroup from 'react-leaflet-cluster'
+/* import { TreeType } from './types'
+import MarkerClusterGroup from 'react-leaflet-cluster' */
 import { Loading } from './Loading'
 
 // fetcher function
-const fetchTrees = async (speciesFilter?: string): Promise<TreeType[]> => {
+/* const fetchTrees = async (speciesFilter?: string): Promise<TreeType[]> => {
   let url = `/api/trees?limit=3`
   if (speciesFilter) {
     url += `&where[species.name][contains]=${encodeURIComponent(speciesFilter)}`
@@ -21,7 +21,7 @@ const fetchTrees = async (speciesFilter?: string): Promise<TreeType[]> => {
   if (!res.ok) throw new Error('Network error while fetching trees')
   const data = await res.json()
   return data.docs.filter((t: any) => t.lat && t.lon)
-}
+} */
 
 export function MapBlockClient({
   center,
@@ -34,16 +34,16 @@ export function MapBlockClient({
 }) {
   const [speciesFilter, setSpeciesFilter] = useState('')
 
-  const {
+  /*   const {
     data: trees = [],
     isLoading,
     isError,
   } = useQuery({
     queryKey: ['trees', speciesFilter],
     queryFn: () => fetchTrees(speciesFilter),
-  })
+  }) */
 
-  const customIcon = L.icon({
+  /*   const customIcon = L.icon({
     iconUrl: '/marker-icon.png',
     shadowUrl: '/marker-shadow.png',
     iconSize: [25, 41],
@@ -57,7 +57,7 @@ export function MapBlockClient({
       className: '',
       iconSize: [40, 40],
     })
-  }
+  } */
 
   return (
     <div className="map-block-container" style={{ position: 'relative', height: height + 'px' }}>
@@ -89,34 +89,18 @@ export function MapBlockClient({
       </div>
 
       <MapContainer
-        center={center}
-        zoom={zoom}
         minZoom={zoom}
         scrollWheelZoom={true}
+        center={center}
+        zoom={zoom}
         style={{ height: '100%', width: '100%' }}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-        <MarkerClusterGroup
-          chunkedLoading
-          iconCreateFunction={createClusterCustomIcon}
-          showCoverageOnHover={false}
-        >
-          {trees.map((tree) => (
-            <Marker key={tree.id} position={[tree.lat, tree.lon]} icon={customIcon}>
-              <Popup>
-                <strong>{tree.species.name}</strong>
-                <br />
-                Supply ID: {tree.supplyId}
-                <br />
-                Store Number: {tree.storeNumber}
-              </Popup>
-            </Marker>
-          ))}
-        </MarkerClusterGroup>
+        <TileLayer url="/api/tiles/{z}/{x}/{y}" />
       </MapContainer>
 
-      <Loading isLoading={isLoading} isError={isError} />
+      {/*     <Loading isLoading={isLoading} isError={isError} /> */}
     </div>
   )
 }

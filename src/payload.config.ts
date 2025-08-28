@@ -16,21 +16,10 @@ import { Sections } from './collections/Sections'
 import { SpeciesCategories } from './collections/Species-Categories'
 import { CategoryGroups } from './collections/Category-Groups'
 
+import { S3_CONFIG } from './config/s3'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-
-// Environment variables for S3 storage
-const bucket = process.env.S3_BUCKET
-if (!bucket) throw new Error('S3_BUCKET env var is required')
-
-const region = process.env.S3_REGION
-if (!region) throw new Error('S3_REGION env var is required')
-
-const accessKeyId = process.env.S3_ACCESS_KEY_ID
-if (!accessKeyId) throw new Error('S3_ACCESS_KEY_ID env var is required')
-
-const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY
-if (!secretAccessKey) throw new Error('S3_SECRET_ACCESS_KEY env var is required')
 
 export default buildConfig({
   admin: {
@@ -54,16 +43,14 @@ export default buildConfig({
   plugins: [
     s3Storage({
       collections: {
-        media: {
-          prefix: 'images',
-        },
+        media: { prefix: 'images' },
       },
-      bucket,
+      bucket: S3_CONFIG.bucket,
       config: {
-        region,
+        region: S3_CONFIG.region,
         credentials: {
-          accessKeyId,
-          secretAccessKey,
+          accessKeyId: S3_CONFIG.accessKeyId,
+          secretAccessKey: S3_CONFIG.secretAccessKey,
         },
       },
     }),
