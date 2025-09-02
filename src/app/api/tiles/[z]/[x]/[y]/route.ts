@@ -14,7 +14,7 @@ export async function GET(req: NextRequest, context: { params: any }) {
   const params = await context.params
   const { z, x, y } = params
 
-  const key = `tiles/${z}/${x}/${y}.png`
+  const key = `tiles/${z}/${x}/${y}.avif`
 
   try {
     const command = new GetObjectCommand({
@@ -23,7 +23,7 @@ export async function GET(req: NextRequest, context: { params: any }) {
     })
 
     const data = await s3.send(command)
-    const body = await data.Body?.transformToWebStream() // <-- fontos
+    const body = await data.Body?.transformToWebStream() // For AWS SDK v3
 
     if (!body) return new NextResponse('Tile not found', { status: 404 })
 
@@ -31,7 +31,7 @@ export async function GET(req: NextRequest, context: { params: any }) {
 
     return new NextResponse(arrayBuffer, {
       status: 200,
-      headers: { 'Content-Type': 'image/png' },
+      headers: { 'Content-Type': 'image/avif' },
     })
   } catch (err) {
     console.error(err)

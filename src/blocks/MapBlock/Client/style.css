@@ -1,5 +1,9 @@
-.map-block-container {
-  margin-top: 200px; 
+/* .map-block-container {
+  margin-top: 50px; 
+} */
+
+.leaflet-control-zoom.leaflet-bar.leaflet-control{
+  margin-top: 60px;
 }
 
 .cluster-icon {

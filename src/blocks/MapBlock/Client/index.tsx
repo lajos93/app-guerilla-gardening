@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { MapContainer, TileLayer /* Marker, Popup */ } from 'react-leaflet'
+import { MapContainer, TileLayer /* Marker, Popup */, useMapEvents } from 'react-leaflet'
 /* import { useQuery } from '@tanstack/react-query' */
 import 'leaflet/dist/leaflet.css'
 /* import L from 'leaflet' */
@@ -23,6 +23,16 @@ import { Loading } from './Loading'
   return data.docs.filter((t: any) => t.lat && t.lon)
 } */
 
+function ZoomDisplay({ setCurrentZoom }: { setCurrentZoom: (z: number) => void }) {
+  // useMapEvents visszaadja a map objektumot, és figyeli az eseményeket
+  useMapEvents({
+    zoomend: (e) => {
+      setCurrentZoom(e.target.getZoom())
+    },
+  })
+  return null
+}
+
 export function MapBlockClient({
   center,
   zoom,
@@ -33,6 +43,7 @@ export function MapBlockClient({
   height?: number
 }) {
   const [speciesFilter, setSpeciesFilter] = useState('')
+  const [currentZoom, setCurrentZoom] = useState(zoom)
 
   /*   const {
     data: trees = [],
@@ -61,8 +72,23 @@ export function MapBlockClient({
 
   return (
     <div className="map-block-container" style={{ position: 'relative', height: height + 'px' }}>
-      {/* Species filter input */}
+      {/* Zoom kijelző */}
       <div
+        style={{
+          position: 'absolute',
+          top: '60px',
+          right: '10px',
+          zIndex: 1000,
+          backgroundColor: 'white',
+          padding: '0.5rem 1rem',
+          borderRadius: '8px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+        }}
+      >
+        Current zoom: {currentZoom}
+      </div>
+      {/* Species filter input */}
+      {/*       <div
         style={{
           position: 'absolute',
           top: '10px',
@@ -86,7 +112,7 @@ export function MapBlockClient({
             width: '200px',
           }}
         />
-      </div>
+      </div> */}
 
       <MapContainer
         minZoom={zoom}
@@ -95,6 +121,8 @@ export function MapBlockClient({
         zoom={zoom}
         style={{ height: '100%', width: '100%' }}
       >
+        <ZoomDisplay setCurrentZoom={setCurrentZoom} />
+
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
         <TileLayer url="/api/tiles/{z}/{x}/{y}" />
