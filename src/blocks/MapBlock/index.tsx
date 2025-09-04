@@ -9,7 +9,7 @@ import { MapBlockHeader } from './Header'
 // Dynamically import the MapBlockClient component to avoid SSR issues with Leaflet
 const MapBlockClient = dynamic(() => import('./Client').then((mod) => mod.MapBlockClient), {
   ssr: false,
-  loading: () => <Loader />,
+  loading: () => <Loader isVisible={true} />,
 })
 
 export const MapBlock = ({

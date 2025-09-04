@@ -1,37 +1,20 @@
 'use client'
 
-import { useState } from 'react'
-import { MapContainer, TileLayer /* Marker, Popup */, useMapEvents } from 'react-leaflet'
-/* import { useQuery } from '@tanstack/react-query' */
+import { useRef, useState } from 'react'
+import { MapContainer, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-/* import L from 'leaflet' */
-import './style.css'
-/* import { TreeType } from './types'
-import MarkerClusterGroup from 'react-leaflet-cluster' */
-import { Loading } from './Loading'
+import { Map as LeafletMap, LatLngBounds } from 'leaflet'
+import dynamic from 'next/dynamic'
+import debounce from 'lodash/debounce'
 
-// fetcher function
-/* const fetchTrees = async (speciesFilter?: string): Promise<TreeType[]> => {
-  let url = `/api/trees?limit=3`
-  if (speciesFilter) {
-    url += `&where[species.name][contains]=${encodeURIComponent(speciesFilter)}`
-  }
+import { MapEvents } from './Helpers/MapEvents'
+import { Tree } from './types'
+import Loader from '../../../components/loader'
 
-  const res = await fetch(url)
-  if (!res.ok) throw new Error('Network error while fetching trees')
-  const data = await res.json()
-  return data.docs.filter((t: any) => t.lat && t.lon)
-} */
-
-function ZoomDisplay({ setCurrentZoom }: { setCurrentZoom: (z: number) => void }) {
-  // useMapEvents visszaadja a map objektumot, és figyeli az eseményeket
-  useMapEvents({
-    zoomend: (e) => {
-      setCurrentZoom(e.target.getZoom())
-    },
-  })
-  return null
-}
+// dynamic import, ssr false
+const GlifyLayer = dynamic(() => import('./Helpers/GlifyLayer').then((mod) => mod.GlifyLayer), {
+  ssr: false,
+})
 
 export function MapBlockClient({
   center,
@@ -42,93 +25,96 @@ export function MapBlockClient({
   zoom: number
   height?: number
 }) {
-  const [speciesFilter, setSpeciesFilter] = useState('')
   const [currentZoom, setCurrentZoom] = useState(zoom)
+  const [trees, setTrees] = useState<Tree[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const mapRef = useRef<LeafletMap | null>(null)
 
-  /*   const {
-    data: trees = [],
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ['trees', speciesFilter],
-    queryFn: () => fetchTrees(speciesFilter),
-  }) */
+  // fetch trees
+  async function fetchTrees(lat: number, lon: number, radiusKm: number) {
+    setIsLoading(true)
+    try {
+      const pageSize = 300
+      let page = 1
+      let allTrees: Tree[] = []
+      let total = 0
 
-  /*   const customIcon = L.icon({
-    iconUrl: '/marker-icon.png',
-    shadowUrl: '/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-  })
+      async function fetchPage(p: number) {
+        const url = `/api/trees/in-radius?lat=${lat}&lon=${lon}&radius=${radiusKm}&page=${p}&pageSize=${pageSize}`
+        const res = await fetch(url)
+        const data = await res.json()
 
-  const createClusterCustomIcon = (cluster: any) => {
-    return L.divIcon({
-      html: `<div class="cluster-icon"><span>${cluster.getChildCount()}</span></div>`,
-      className: '',
-      iconSize: [40, 40],
-    })
-  } */
+        if (p === 1) total = data.total ?? 0
+
+        allTrees = [...allTrees, ...(data.trees || [])]
+        setTrees([...allTrees])
+      }
+
+      await fetchPage(page)
+      const totalPages = Math.ceil(total / pageSize)
+      for (page = 2; page <= totalPages; page++) fetchPage(page) // async, don't await
+    } catch (err) {
+      console.error('fetchTrees error', err)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // Debounce for fetchTrees
+  const debouncedFetchTrees = useRef(
+    debounce((lat: number, lon: number, radiusKm: number) => {
+      fetchTrees(lat, lon, radiusKm)
+    }, 200),
+  ).current
 
   return (
-    <div className="map-block-container" style={{ position: 'relative', height: height + 'px' }}>
-      {/* Zoom kijelző */}
+    <div style={{ position: 'relative', height: (height ?? 600) + 'px' }}>
       <div
         style={{
           position: 'absolute',
-          top: '60px',
-          right: '10px',
+          top: 60,
+          right: 10,
           zIndex: 1000,
           backgroundColor: 'white',
           padding: '0.5rem 1rem',
-          borderRadius: '8px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+          borderRadius: 8,
         }}
       >
         Current zoom: {currentZoom}
       </div>
-      {/* Species filter input */}
-      {/*       <div
-        style={{
-          position: 'absolute',
-          top: '10px',
-          right: '10px',
-          zIndex: 1000,
-          backgroundColor: 'white',
-          padding: '0.5rem 1rem',
-          borderRadius: '8px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-        }}
-      >
-        <input
-          type="text"
-          placeholder="Filter species..."
-          value={speciesFilter}
-          onChange={(e) => setSpeciesFilter(e.target.value)}
-          style={{
-            border: '1px solid #ccc',
-            borderRadius: '4px',
-            padding: '0.25rem 0.5rem',
-            width: '200px',
-          }}
-        />
-      </div> */}
-
       <MapContainer
-        minZoom={zoom}
-        scrollWheelZoom={true}
         center={center}
         zoom={zoom}
         style={{ height: '100%', width: '100%' }}
+        ref={mapRef}
       >
-        <ZoomDisplay setCurrentZoom={setCurrentZoom} />
+        <MapEvents
+          onCenterChange={(center, z, bounds: LatLngBounds) => {
+            setCurrentZoom(z)
 
+            if (z > 14) {
+              const radiusKm = bounds.getCenter().distanceTo(bounds.getNorthEast()) / 1000
+              debouncedFetchTrees(center[0], center[1], radiusKm)
+            } else {
+              setTrees([])
+            }
+          }}
+        />
+
+        {/* OSM tile layer */}
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-        <TileLayer url="/api/tiles/{z}/{x}/{y}" />
-      </MapContainer>
+        {/* custom tiles until zoom level 14 */}
+        {currentZoom <= 14 && <TileLayer url="/api/tiles/{z}/{x}/{y}" maxZoom={14} />}
 
-      {/*     <Loading isLoading={isLoading} isError={isError} /> */}
+        {/* Loader overlay while fetching trees */}
+        {currentZoom > 14 && isLoading && <Loader text="Loading trees..." isVisible={true} />}
+
+        {/* GlifyLayer 15+ zoom */}
+        {currentZoom > 14 && trees.length > 0 && mapRef.current && (
+          <GlifyLayer map={mapRef.current} trees={trees} />
+        )}
+      </MapContainer>
     </div>
   )
 }

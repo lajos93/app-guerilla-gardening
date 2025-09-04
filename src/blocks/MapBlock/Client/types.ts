@@ -1,14 +1,6 @@
-export type SpeciesType = {
-  id: number
-  name: string
-  latinName: string
-}
-
-export type TreeType = {
-  id: number
-  species: SpeciesType
+export type Tree = {
+  id: string
   lat: number
   lon: number
-  supplyId: string
-  storeNumber: number
+  county?: string
 }

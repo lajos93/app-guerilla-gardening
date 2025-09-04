@@ -1,17 +1,21 @@
+// components/Loader.tsx
+import './Loader.css'
 import { mapHeight } from '../../blocks/MapBlock/constants'
 
-const Loader = () => (
-  <div
-    style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: mapHeight + 'px',
-      background: '#f5f5f5',
-    }}
-  >
-    <span className="animate-spin border-4 border-gray-300 border-t-transparent rounded-full w-12 h-12"></span>
-  </div>
-)
+interface LoaderProps {
+  text?: string
+  isVisible: boolean
+}
 
+const Loader = ({ text = 'Loading...', isVisible }: LoaderProps) => {
+  return (
+    <div
+      className={`loader-overlay ${isVisible ? 'fade-in' : 'fade-out'}`}
+      style={{ height: mapHeight + 'px' }}
+    >
+      <div className="loader-spinner"></div>
+      <div className="loader-text">{text}</div>
+    </div>
+  )
+}
 export default Loader

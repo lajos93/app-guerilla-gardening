@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import groupByCountyHandler from '../endpoints/groupByCountyHandler'
 import treesLightHandler from '../endpoints/treesLightHandler'
+import treesInRadiusHandler from '../endpoints/inRadius'
 
 export const Trees: CollectionConfig = {
   slug: 'trees',
@@ -78,6 +79,11 @@ export const Trees: CollectionConfig = {
       path: '/treesLight',
       method: 'get',
       handler: treesLightHandler,
+    },
+    {
+      path: '/in-radius',
+      method: 'get',
+      handler: treesInRadiusHandler,
     },
   ],
 }
