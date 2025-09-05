@@ -3,25 +3,14 @@
 } */
 
 .leaflet-control-zoom.leaflet-bar.leaflet-control{
-  margin-top: 60px;
+  margin-top: 80px;
 }
 
-.cluster-icon {
-  background: radial-gradient(circle at center, #4caf50, #2e7d32);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 14px;
-  border: 3px solid white;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  width: 40px;
-  height: 40px;
-  transition: transform 0.2s;
+.leaflet-glify-layer {
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 
-.cluster-icon:hover {
-  transform: scale(1.1);
+.leaflet-glify-layer.visible {
+  opacity: 1;
 }

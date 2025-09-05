@@ -11,6 +11,8 @@ import { MapEvents } from './Helpers/MapEvents'
 import { Tree } from './types'
 import Loader from '../../../components/loader'
 
+import './style.css'
+
 // dynamic import, ssr false
 const GlifyLayer = dynamic(() => import('./Helpers/GlifyLayer').then((mod) => mod.GlifyLayer), {
   ssr: false,
@@ -32,27 +34,28 @@ export function MapBlockClient({
 
   // fetch trees
   async function fetchTrees(lat: number, lon: number, radiusKm: number) {
-    setIsLoading(true)
     try {
+      setIsLoading(true)
       const pageSize = 300
-      let page = 1
       let allTrees: Tree[] = []
-      let total = 0
 
-      async function fetchPage(p: number) {
-        const url = `/api/trees/in-radius?lat=${lat}&lon=${lon}&radius=${radiusKm}&page=${p}&pageSize=${pageSize}`
+      const url = `/api/trees/in-radius?lat=${lat}&lon=${lon}&radius=${radiusKm}&page=1&pageSize=${pageSize}`
+      const res = await fetch(url)
+      const data = await res.json()
+
+      allTrees = [...allTrees, ...(data.trees || [])]
+
+      const total = data.total ?? 0
+      const totalPages = Math.ceil(total / pageSize)
+
+      for (let page = 2; page <= totalPages; page++) {
+        const url = `/api/trees/in-radius?lat=${lat}&lon=${lon}&radius=${radiusKm}&page=${page}&pageSize=${pageSize}`
         const res = await fetch(url)
         const data = await res.json()
-
-        if (p === 1) total = data.total ?? 0
-
         allTrees = [...allTrees, ...(data.trees || [])]
-        setTrees([...allTrees])
       }
 
-      await fetchPage(page)
-      const totalPages = Math.ceil(total / pageSize)
-      for (page = 2; page <= totalPages; page++) fetchPage(page) // async, don't await
+      setTrees(allTrees)
     } catch (err) {
       console.error('fetchTrees error', err)
     } finally {
