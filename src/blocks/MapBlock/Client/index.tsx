@@ -108,7 +108,9 @@ export function MapBlockClient({
         {currentZoom <= 14 && <TileLayer url="/api/tiles/{z}/{x}/{y}" maxZoom={14} />}
 
         {/* Loader overlay while fetching trees */}
-        {currentZoom > 14 && isLoading && <Loader text="Loading trees..." isVisible={true} />}
+        {currentZoom > 14 && isLoading && (
+          <Loader text="Loading trees..." isVisible={true} positionAbsolute />
+        )}
 
         {/* GlifyLayer 15+ zoom */}
         {currentZoom > 14 && trees.length > 0 && mapRef.current && (
