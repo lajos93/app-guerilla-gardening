@@ -1,22 +1,50 @@
 'use client'
 
-import { useRef, useState } from 'react'
-import { MapContainer, TileLayer } from 'react-leaflet'
+import { useEffect, useState } from 'react'
+import { MapContainer, TileLayer, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import { Map as LeafletMap, LatLngBounds } from 'leaflet'
-import dynamic from 'next/dynamic'
-import debounce from 'lodash/debounce'
-
-import { MapEvents } from './Helpers/MapEvents'
-import { Tree } from './types'
-import Loader from '../../../components/loader'
-
+import L from 'leaflet'
+import 'leaflet.vectorgrid'
+import { Feature } from 'geojson'
 import './style.css'
 
-// dynamic import, ssr false
-const GlifyLayer = dynamic(() => import('./Helpers/GlifyLayer').then((mod) => mod.GlifyLayer), {
-  ssr: false,
-})
+function VectorGridLayer({ setCurrentZoom }: { setCurrentZoom: (z: number) => void }) {
+  const map = useMap()
+
+  useEffect(() => {
+    if (!map) return
+
+    const vectorLayer = L.vectorGrid.protobuf(
+      'https://app-guerilla-gardening-tile-server.onrender.com/maps/trees/{z}/{x}/{y}.pbf',
+      {
+        vectorTileLayerStyles: {
+          trees: {
+            weight: 1,
+            color: 'green',
+            fill: true,
+            fillColor: 'green',
+            fillOpacity: 0.5,
+          },
+        },
+        interactive: true,
+        maxZoom: 18,
+        getFeatureId: (feature: any) => feature.properties?.id,
+      },
+    )
+
+    vectorLayer.addTo(map)
+
+    const onZoom = () => setCurrentZoom(map.getZoom())
+    map.on('zoomend', onZoom)
+
+    return () => {
+      map.removeLayer(vectorLayer)
+      map.off('zoomend', onZoom)
+    }
+  }, [map, setCurrentZoom])
+
+  return null
+}
 
 export function MapBlockClient({
   center,
@@ -28,47 +56,6 @@ export function MapBlockClient({
   height?: number
 }) {
   const [currentZoom, setCurrentZoom] = useState(zoom)
-  const [trees, setTrees] = useState<Tree[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const mapRef = useRef<LeafletMap | null>(null)
-
-  // fetch trees
-  async function fetchTrees(lat: number, lon: number, radiusKm: number) {
-    try {
-      setIsLoading(true)
-      const pageSize = 300
-      let allTrees: Tree[] = []
-
-      const url = `/api/trees/in-radius?lat=${lat}&lon=${lon}&radius=${radiusKm}&page=1&pageSize=${pageSize}`
-      const res = await fetch(url)
-      const data = await res.json()
-
-      allTrees = [...allTrees, ...(data.trees || [])]
-
-      const total = data.total ?? 0
-      const totalPages = Math.ceil(total / pageSize)
-
-      for (let page = 2; page <= totalPages; page++) {
-        const url = `/api/trees/in-radius?lat=${lat}&lon=${lon}&radius=${radiusKm}&page=${page}&pageSize=${pageSize}`
-        const res = await fetch(url)
-        const data = await res.json()
-        allTrees = [...allTrees, ...(data.trees || [])]
-      }
-
-      setTrees(allTrees)
-    } catch (err) {
-      console.error('fetchTrees error', err)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  // Debounce for fetchTrees
-  const debouncedFetchTrees = useRef(
-    debounce((lat: number, lon: number, radiusKm: number) => {
-      fetchTrees(lat, lon, radiusKm)
-    }, 200),
-  ).current
 
   return (
     <div style={{ position: 'relative', height: (height ?? 600) + 'px' }}>
@@ -85,40 +72,18 @@ export function MapBlockClient({
       >
         Current zoom: {currentZoom}
       </div>
+
       <MapContainer
         center={center}
         zoom={zoom}
         style={{ height: '100%', width: '100%' }}
-        ref={mapRef}
+        zoomControl={true}
       >
-        <MapEvents
-          onCenterChange={(center, z, bounds: LatLngBounds) => {
-            setCurrentZoom(z)
-
-            if (z > 14) {
-              const radiusKm = bounds.getCenter().distanceTo(bounds.getNorthEast()) / 1000
-              debouncedFetchTrees(center[0], center[1], radiusKm)
-            } else {
-              setTrees([])
-            }
-          }}
-        />
-
-        {/* OSM tile layer */}
+        {/* OSM háttér */}
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-        {/* custom tiles until zoom level 14 */}
-        {currentZoom <= 14 && <TileLayer url="/api/tiles/{z}/{x}/{y}" maxZoom={14} />}
-
-        {/* Loader overlay while fetching trees */}
-        {currentZoom > 14 && isLoading && (
-          <Loader text="Loading trees..." isVisible={true} positionAbsolute />
-        )}
-
-        {/* GlifyLayer 15+ zoom */}
-        {currentZoom > 14 && trees.length > 0 && mapRef.current && (
-          <GlifyLayer map={mapRef.current} trees={trees} />
-        )}
+        {/* VectorGrid Layer */}
+        <VectorGridLayer setCurrentZoom={setCurrentZoom} />
       </MapContainer>
     </div>
   )
