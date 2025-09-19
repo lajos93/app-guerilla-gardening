@@ -70,6 +70,8 @@ export function MapBlockClient({
     }, 200),
   ).current
 
+  const zoomThreshold = 15
+
   return (
     <div style={{ position: 'relative', height: (height ?? 600) + 'px' }}>
       <div
@@ -95,7 +97,7 @@ export function MapBlockClient({
           onCenterChange={(center, z, bounds: LatLngBounds) => {
             setCurrentZoom(z)
 
-            if (z > 14) {
+            if (z > zoomThreshold) {
               const radiusKm = bounds.getCenter().distanceTo(bounds.getNorthEast()) / 1000
               debouncedFetchTrees(center[0], center[1], radiusKm)
             } else {
@@ -107,16 +109,18 @@ export function MapBlockClient({
         {/* OSM tile layer */}
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-        {/* custom tiles until zoom level 14 */}
-        {currentZoom <= 14 && <TileLayer url="/api/tiles/{z}/{x}/{y}" maxZoom={14} />}
+        {/* custom tiles until zoom level zoomThreshold */}
+        {currentZoom <= zoomThreshold && (
+          <TileLayer url="/api/tiles/{z}/{x}/{y}" maxZoom={zoomThreshold} />
+        )}
 
         {/* Loader overlay while fetching trees */}
-        {currentZoom > 14 && isLoading && (
+        {currentZoom > zoomThreshold && isLoading && (
           <Loader text="Loading trees..." isVisible={true} positionAbsolute />
         )}
 
         {/* GlifyLayer 15+ zoom */}
-        {currentZoom > 14 && trees.length > 0 && mapRef.current && (
+        {currentZoom > zoomThreshold && trees.length > 0 && mapRef.current && (
           <GlifyLayer map={mapRef.current} trees={trees} />
         )}
       </MapContainer>
