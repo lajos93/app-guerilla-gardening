@@ -25,17 +25,25 @@
     "@payloadcms/richtext-lexical": "3.53.0",
     "@payloadcms/storage-s3": "3.53.0",
     "@payloadcms/ui": "3.53.0",
+    "@radix-ui/react-checkbox": "^1.3.3",
+    "@radix-ui/react-label": "^2.1.7",
+    "@radix-ui/react-select": "^2.2.6",
+    "@radix-ui/react-slider": "^1.3.6",
+    "@radix-ui/react-slot": "^1.2.3",
     "@supabase/supabase-js": "^2.56.0",
     "@tailwindcss/postcss": "^4.1.11",
     "@tanstack/react-query": "^5.85.5",
     "@tanstack/react-query-devtools": "^5.85.5",
     "axios": "^1.9.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "cross-env": "^7.0.3",
     "dotenv": "^16.5.0",
     "graphql": "^16.8.1",
     "leaflet": "^1.9.4",
     "leaflet.glify": "^3.3.1",
     "lodash": "^4.17.21",
+    "lucide-react": "^0.544.0",
     "next": "15.3.0",
     "payload": "3.53.0",
     "postcss": "^8.5.6",
@@ -43,7 +51,8 @@
     "react-dom": "19.1.0",
     "react-leaflet": "^5.0.0",
     "react-leaflet-cluster": "^3.1.1",
-    "sharp": "0.32.6"
+    "sharp": "0.32.6",
+    "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -56,6 +65,7 @@
     "eslint-config-next": "15.3.0",
     "prettier": "^3.4.2",
     "tailwindcss": "^4.1.11",
+    "tw-animate-css": "^1.3.8",
     "typescript": "^5.7.3"
   },
   "engines": {

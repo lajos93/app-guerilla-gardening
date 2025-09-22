@@ -1,1 +1,1 @@
-export const mapHeight = 800
+export const mapHeight = 400

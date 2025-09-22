@@ -96,8 +96,12 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    theme: Theme;
+  };
+  globalsSelect: {
+    theme: ThemeSelect<false> | ThemeSelect<true>;
+  };
   locale: null;
   user: User & {
     collection: 'users';
@@ -192,6 +196,7 @@ export interface SpeciesCategory {
   id: number;
   name: string;
   latinName: string;
+  isPriority?: boolean | null;
   group?: (number | null) | CategoryGroup;
   updatedAt: string;
   createdAt: string;
@@ -670,6 +675,7 @@ export interface SectionsSelect<T extends boolean = true> {
 export interface SpeciesCategoriesSelect<T extends boolean = true> {
   name?: T;
   latinName?: T;
+  isPriority?: T;
   group?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -714,6 +720,59 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "theme".
+ */
+export interface Theme {
+  id: number;
+  /**
+   * Hex color code, e.g. #4f5f21
+   */
+  primary?: string | null;
+  /**
+   * Hex color code, e.g. #eef2e0
+   */
+  primary100?: string | null;
+  /**
+   * Hex color code, e.g. #4f5f21
+   */
+  primary500?: string | null;
+  /**
+   * Hex color code, e.g. #3a4518
+   */
+  primary700?: string | null;
+  /**
+   * Hex color code, e.g. #161616
+   */
+  black?: string | null;
+  /**
+   * Hex color code, e.g. #e9e9db
+   */
+  surface500?: string | null;
+  /**
+   * Hex color code, e.g. #646463
+   */
+  muted500?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "theme_select".
+ */
+export interface ThemeSelect<T extends boolean = true> {
+  primary?: T;
+  primary100?: T;
+  primary500?: T;
+  primary700?: T;
+  black?: T;
+  surface500?: T;
+  muted500?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

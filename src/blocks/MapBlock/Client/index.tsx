@@ -12,6 +12,7 @@ import { Tree } from './types'
 import Loader from '../../../components/loader'
 
 import './style.css'
+import { Filters, MapFilters } from '../Filter'
 
 // dynamic import, ssr false
 const GlifyLayer = dynamic(() => import('./Helpers/GlifyLayer').then((mod) => mod.GlifyLayer), {
@@ -30,9 +31,16 @@ export function MapBlockClient({
   const [currentZoom, setCurrentZoom] = useState(zoom)
   const [trees, setTrees] = useState<Tree[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [filters, setFilters] = useState<Filters>({
+    search: '',
+    prioritySpecies: [],
+    speciesCategories: [],
+    categoryGroups: [],
+    year: [2000],
+    district: '',
+  })
   const mapRef = useRef<LeafletMap | null>(null)
 
-  // fetch trees
   async function fetchTrees(lat: number, lon: number, radiusKm: number) {
     try {
       setIsLoading(true)
@@ -42,7 +50,6 @@ export function MapBlockClient({
       const url = `/api/trees/in-radius?lat=${lat}&lon=${lon}&radius=${radiusKm}&page=1&pageSize=${pageSize}`
       const res = await fetch(url)
       const data = await res.json()
-
       allTrees = [...allTrees, ...(data.trees || [])]
 
       const total = data.total ?? 0
@@ -63,30 +70,71 @@ export function MapBlockClient({
     }
   }
 
-  // Debounce for fetchTrees
   const debouncedFetchTrees = useRef(
     debounce((lat: number, lon: number, radiusKm: number) => {
       fetchTrees(lat, lon, radiusKm)
     }, 200),
   ).current
 
-  const zoomThreshold = 15
+  const zoomThreshold = 16
+
+  const filteredTrees = trees.filter((tree) => {
+    /* const matchPriority =
+      filters.prioritySpecies.length === 0 ||
+      filters.prioritySpecies.includes(tree.speciesCategoryId)
+
+    const matchCategory =
+      filters.speciesCategories.length === 0 ||
+      filters.speciesCategories.includes(tree.speciesCategoryId)
+
+    const matchGroup =
+      filters.categoryGroups.length === 0 ||
+      filters.categoryGroups.includes(tree.categoryGroupId)
+
+    const matchSearch =
+      filters.search === '' ||
+      tree.speciesName?.toLowerCase().includes(filters.search.toLowerCase())
+
+    const matchYear =
+      filters.year.length === 0 || (tree.year && tree.year >= filters.year[0])
+
+    const matchDistrict =
+      !filters.district || tree.district === filters.district
+
+    return (
+      matchPriority &&
+      matchCategory &&
+      matchGroup &&
+      matchSearch &&
+      matchYear &&
+      matchDistrict
+    ) */
+    return tree
+  })
 
   return (
-    <div style={{ position: 'relative', height: (height ?? 600) + 'px' }}>
+    <div
+      style={{
+        position: 'relative',
+        height: 'calc(100vh - 120px)', // a -120px az a header/footer miatt kell
+        maxHeight: '100vh',
+      }}
+    >
+      {/* Overlay filters */}
       <div
         style={{
           position: 'absolute',
           top: 60,
           right: 10,
           zIndex: 1000,
-          backgroundColor: 'white',
-          padding: '0.5rem 1rem',
-          borderRadius: 8,
         }}
       >
-        Current zoom: {currentZoom}
+        <MapFilters onChange={setFilters} />
+        <div className="text-xs text-gray-500 mt-2">
+          Zoom: {currentZoom}, Fák: {filteredTrees.length}
+        </div>
       </div>
+
       <MapContainer
         center={center}
         zoom={zoom}
@@ -96,7 +144,6 @@ export function MapBlockClient({
         <MapEvents
           onCenterChange={(center, z, bounds: LatLngBounds) => {
             setCurrentZoom(z)
-
             if (z > zoomThreshold) {
               const radiusKm = bounds.getCenter().distanceTo(bounds.getNorthEast()) / 1000
               debouncedFetchTrees(center[0], center[1], radiusKm)
@@ -106,22 +153,18 @@ export function MapBlockClient({
           }}
         />
 
-        {/* OSM tile layer */}
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-        {/* custom tiles until zoom level zoomThreshold */}
         {currentZoom <= zoomThreshold && (
           <TileLayer url="/api/tiles/{z}/{x}/{y}" maxZoom={zoomThreshold} />
         )}
 
-        {/* Loader overlay while fetching trees */}
         {currentZoom > zoomThreshold && isLoading && (
           <Loader text="Loading trees..." isVisible={true} positionAbsolute />
         )}
 
-        {/* GlifyLayer 15+ zoom */}
-        {currentZoom > zoomThreshold && trees.length > 0 && mapRef.current && (
-          <GlifyLayer map={mapRef.current} trees={trees} />
+        {currentZoom > zoomThreshold && filteredTrees.length > 0 && mapRef.current && (
+          <GlifyLayer map={mapRef.current} trees={filteredTrees} />
         )}
       </MapContainer>
     </div>

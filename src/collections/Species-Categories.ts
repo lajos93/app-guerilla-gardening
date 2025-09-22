@@ -27,6 +27,10 @@ export const SpeciesCategories: CollectionConfig = {
       unique: true,
     },
     {
+      name: 'isPriority',
+      type: 'checkbox',
+    },
+    {
       name: 'group',
       type: 'relationship',
       relationTo: 'category-groups',
