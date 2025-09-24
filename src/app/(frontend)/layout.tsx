@@ -3,6 +3,9 @@ import './globals.css'
 import './styles.css'
 import { Providers } from './providers'
 import { getTheme } from '@/lib/getTheme'
+import { Header } from '../../components/layout/Header'
+import { getNavigation } from '../../lib/getNavigation'
+import { getLogo } from '../../lib/getLogo'
 
 export const metadata = {
   description: 'A blank template using Payload in a Next.js app.',
@@ -12,6 +15,9 @@ export const metadata = {
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props
   const theme = await getTheme()
+
+  const navigation = await getNavigation()
+  const logo = await getLogo()
 
   return (
     <html lang="en">
@@ -27,7 +33,10 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
           ['--muted-500' as any]: theme.muted500,
         }}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          <Header navigation={navigation} logo={logo} />
+          <main>{children}</main>
+        </Providers>
       </body>
     </html>
   )

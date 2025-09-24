@@ -4,6 +4,11 @@ import type { Field } from 'payload'
 
 export const MapBlockField: Field[] = [
   {
+    name: 'anchor',
+    label: 'Anchor ID',
+    type: 'text',
+  },
+  {
     name: 'titleBackgroundColor',
     label: 'Title Background Color (hex code or CSS value)',
     type: 'text',

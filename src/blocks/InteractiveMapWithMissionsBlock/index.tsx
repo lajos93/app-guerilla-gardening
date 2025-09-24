@@ -28,7 +28,7 @@ const InteractiveMapWithMissions: FC<Props> = ({ missions, map }) => {
   }
 
   return (
-    <div>
+    <>
       <MissionsBlock
         {...missions}
         onMissionClick={handleMissionClick}
@@ -36,7 +36,7 @@ const InteractiveMapWithMissions: FC<Props> = ({ missions, map }) => {
         titleBackgroundColor={map.titleBackgroundColor}
       />
       <MapBlock {...map} activeMission={activeMission} />
-    </div>
+    </>
   )
 }
 

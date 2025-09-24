@@ -4,6 +4,11 @@ const AboutBlock: Block = {
   slug: 'about',
   fields: [
     {
+      name: 'anchor',
+      label: 'Anchor ID',
+      type: 'text',
+    },
+    {
       name: 'backgroundColor',
       label: 'Background Color (hex code or CSS value)',
       type: 'text',

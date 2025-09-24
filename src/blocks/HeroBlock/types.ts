@@ -1,3 +1,5 @@
+import type { Logo } from '@/payload-types'
+
 export type HeroType = {
   backgroundImage: {
     filename: string
@@ -5,6 +7,7 @@ export type HeroType = {
     width: number
     height: number
   }
+  logo?: Logo
   lowResBackgroundImageBase64?: string
   title: string
   subtitle?: string

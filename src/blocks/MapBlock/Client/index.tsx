@@ -20,10 +20,11 @@ const GlifyLayer = dynamic(() => import('./Helpers/GlifyLayer').then((mod) => mo
 })
 
 export function MapBlockClient({
+  anchor,
   center,
   zoom,
-  height,
 }: {
+  anchor?: string
   center: [number, number]
   zoom: number
   height?: number
@@ -114,6 +115,7 @@ export function MapBlockClient({
 
   return (
     <div
+      id={anchor}
       style={{
         position: 'relative',
         height: 'calc(100vh - 120px)', // a -120px az a header/footer miatt kell

@@ -67,6 +67,7 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    navigation: Navigation;
     users: User;
     media: Media;
     species: Species;
@@ -81,6 +82,7 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    navigation: NavigationSelect<false> | NavigationSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     species: SpeciesSelect<false> | SpeciesSelect<true>;
@@ -97,9 +99,11 @@ export interface Config {
     defaultIDType: number;
   };
   globals: {
+    logo: Logo;
     theme: Theme;
   };
   globalsSelect: {
+    logo: LogoSelect<false> | LogoSelect<true>;
     theme: ThemeSelect<false> | ThemeSelect<true>;
   };
   locale: null;
@@ -128,6 +132,18 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation".
+ */
+export interface Navigation {
+  id: number;
+  label: string;
+  url: string;
+  order: number;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -276,6 +292,7 @@ export interface Page {
             blockType: 'hero';
           }
         | {
+            anchor?: string | null;
             backgroundColor: string;
             title: string;
             titleHighlight?: string | null;
@@ -299,6 +316,7 @@ export interface Page {
             blockType: 'about';
           }
         | {
+            anchor?: string | null;
             titleBackgroundColor?: string | null;
             titleTextColor?: string | null;
             extendedTitleTextColor?: string | null;
@@ -338,6 +356,7 @@ export interface Page {
               showDivider?: boolean | null;
             };
             map: {
+              anchor?: string | null;
               titleBackgroundColor?: string | null;
               titleTextColor?: string | null;
               extendedTitleTextColor?: string | null;
@@ -390,6 +409,10 @@ export interface Section {
 export interface PayloadLockedDocument {
   id: number;
   document?:
+    | ({
+        relationTo: 'navigation';
+        value: number | Navigation;
+      } | null)
     | ({
         relationTo: 'users';
         value: number | User;
@@ -463,6 +486,17 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation_select".
+ */
+export interface NavigationSelect<T extends boolean = true> {
+  label?: T;
+  url?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -584,6 +618,7 @@ export interface PagesSelect<T extends boolean = true> {
         about?:
           | T
           | {
+              anchor?: T;
               backgroundColor?: T;
               title?: T;
               titleHighlight?: T;
@@ -594,6 +629,7 @@ export interface PagesSelect<T extends boolean = true> {
         map?:
           | T
           | {
+              anchor?: T;
               titleBackgroundColor?: T;
               titleTextColor?: T;
               extendedTitleTextColor?: T;
@@ -630,6 +666,7 @@ export interface PagesSelect<T extends boolean = true> {
               map?:
                 | T
                 | {
+                    anchor?: T;
                     titleBackgroundColor?: T;
                     titleTextColor?: T;
                     extendedTitleTextColor?: T;
@@ -723,6 +760,17 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "logo".
+ */
+export interface Logo {
+  id: number;
+  logo: number | Media;
+  altText: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "theme".
  */
 export interface Theme {
@@ -757,6 +805,17 @@ export interface Theme {
   muted500?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "logo_select".
+ */
+export interface LogoSelect<T extends boolean = true> {
+  logo?: T;
+  altText?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

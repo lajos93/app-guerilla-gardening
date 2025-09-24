@@ -10,6 +10,7 @@ export type MapBlocKHeaderType = {
 }
 
 export type MapBlockClientType = {
+  anchor?: string
   latitude: number
   longitude: number
   zoomLevel: number

@@ -2,6 +2,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 import type { AboutType } from './types'
 
 export const AboutBlock = ({
+  anchor,
   backgroundColor,
   title,
   titleHighlight,
@@ -9,6 +10,7 @@ export const AboutBlock = ({
 }: AboutType) => {
   return (
     <section
+      id={anchor}
       className="relative w-full pb-2 pt-8 bg-gray-100 pl-40 pr-40 pr-4 text-left"
       style={{ backgroundColor }}
     >

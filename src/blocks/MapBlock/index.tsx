@@ -13,6 +13,7 @@ const MapBlockClient = dynamic(() => import('./Client').then((mod) => mod.MapBlo
 })
 
 export const MapBlock = ({
+  anchor,
   titleBackgroundColor,
   titleTextColor,
   extendedTitleTextColor,
@@ -31,7 +32,12 @@ export const MapBlock = ({
         showDivider={showDivider}
         activeMission={activeMission}
       />
-      <MapBlockClient center={[latitude, longitude]} zoom={zoomLevel} height={mapHeight} />
+      <MapBlockClient
+        anchor={anchor}
+        center={[latitude, longitude]}
+        zoom={zoomLevel}
+        height={mapHeight}
+      />
     </>
   )
 }

@@ -11,6 +11,7 @@ import type { MapBlockType } from './MapBlock/types'
 import type { AboutBlockType } from './AboutBlock/types'
 import type { MissionsBlockType } from './MissionsBlock/types'
 import type { InteractiveMapWithMissionsType } from './InteractiveMapWithMissionsBlock/types'
+import { getLogo } from '@/lib/getLogo'
 
 type BlockMap = {
   map: MapBlockType
@@ -26,7 +27,9 @@ interface RenderBlocksProps {
   blocks: Block[]
 }
 
-export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
+export const RenderBlocks = async ({ blocks }: RenderBlocksProps) => {
+  const logo = await getLogo()
+
   if (!blocks.length) return null
 
   return (
@@ -37,7 +40,7 @@ export const RenderBlocks: React.FC<RenderBlocksProps> = ({ blocks }) => {
             return <MapBlock key={index} {...block} />
 
           case 'hero':
-            return <HeroBlock key={index} {...block} />
+            return <HeroBlock key={index} {...block} logo={logo} />
 
           case 'about':
             return <AboutBlock key={index} {...block} />

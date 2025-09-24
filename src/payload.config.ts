@@ -17,7 +17,9 @@ import { SpeciesCategories } from './collections/Species-Categories'
 import { CategoryGroups } from './collections/Category-Groups'
 
 import { S3_CONFIG } from './config/s3'
-import { Theme } from './globals/theme'
+import { Theme } from './globals/Theme'
+import { Logo } from './globals/Logo'
+import Navigation from './collections/Navigation'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -29,8 +31,18 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Species, Trees, Pages, Sections, SpeciesCategories, CategoryGroups],
-  globals: [Theme],
+  collections: [
+    Navigation,
+    Users,
+    Media,
+    Species,
+    Trees,
+    Pages,
+    Sections,
+    SpeciesCategories,
+    CategoryGroups,
+  ],
+  globals: [Logo, Theme],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
