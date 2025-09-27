@@ -98,6 +98,9 @@ importers:
       payload:
         specifier: 3.53.0
         version: 3.53.0(graphql@16.11.0)(typescript@5.9.2)
+      pg:
+        specifier: ^8.16.3
+        version: 8.16.3
       postcss:
         specifier: ^8.5.6
         version: 8.5.6
@@ -135,6 +138,9 @@ importers:
       '@types/node':
         specifier: ^22.5.4
         version: 22.18.6
+      '@types/pg':
+        specifier: ^8.15.5
+        version: 8.15.5
       '@types/react':
         specifier: 19.1.0
         version: 19.1.0
@@ -2142,6 +2148,9 @@ packages:
 
   '@types/pg@8.10.2':
     resolution: {integrity: sha512-MKFs9P6nJ+LAeHLU3V0cODEOgyThJ3OAnmOlsZsxux6sfQs3HRXR5bBn7xG5DjckEFhTAxsXi7k7cd0pCMxpJw==}
+
+  '@types/pg@8.15.5':
+    resolution: {integrity: sha512-LF7lF6zWEKxuT3/OR8wAZGzkg4ENGXFNyiV/JeOt9z5B+0ZVwbql9McqX5c/WStFq1GaGso7H1AzP/qSzmlCKQ==}
 
   '@types/phoenix@1.6.6':
     resolution: {integrity: sha512-PIzZZlEppgrpoT2QgbnDU+MMzuR6BbCjllj0bM70lWoejMeNJAxCchxnv7J3XFkI8MpygtRpzXrIlmWUBclP5A==}
@@ -7396,6 +7405,12 @@ snapshots:
       '@types/node': 22.18.6
       pg-protocol: 1.10.3
       pg-types: 4.1.0
+
+  '@types/pg@8.15.5':
+    dependencies:
+      '@types/node': 22.18.6
+      pg-protocol: 1.10.3
+      pg-types: 2.2.0
 
   '@types/phoenix@1.6.6': {}
 
