@@ -14,8 +14,8 @@ export const metadata = {
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props
-  const theme = await getTheme()
 
+  const theme = await getTheme()
   const navigation = await getNavigation()
   const logo = await getLogo()
 
@@ -23,7 +23,6 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
     <html lang="en">
       <body
         style={{
-          // override css variables with values from the database
           ['--primary' as any]: theme.primary,
           ['--primary-100' as any]: theme.primary100,
           ['--primary-500' as any]: theme.primary500,

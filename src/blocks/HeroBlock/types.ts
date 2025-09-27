@@ -1,6 +1,7 @@
 import type { Logo } from '@/payload-types'
 
 export type HeroType = {
+  anchor?: string
   backgroundImage: {
     filename: string
     url: string

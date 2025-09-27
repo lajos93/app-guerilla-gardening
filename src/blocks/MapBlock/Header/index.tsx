@@ -36,7 +36,7 @@ export const MapBlockHeader = ({
           fill={titleBackgroundColor}
           style={{
             marginBottom: '-60px',
-            zIndex: 99999999,
+            zIndex: 9998,
             position: 'absolute',
           }}
         />

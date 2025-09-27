@@ -4,6 +4,11 @@ const HeroBlock: Block = {
   slug: 'hero',
   fields: [
     {
+      name: 'anchor',
+      label: 'Anchor ID',
+      type: 'text',
+    },
+    {
       name: 'backgroundImage',
       type: 'upload',
       relationTo: 'media',

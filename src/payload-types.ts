@@ -275,6 +275,7 @@ export interface Page {
   layout?:
     | (
         | {
+            anchor?: string | null;
             backgroundImage: number | Media;
             lowResBackgroundImageBase64?: string | null;
             title: string;
@@ -600,6 +601,7 @@ export interface PagesSelect<T extends boolean = true> {
         hero?:
           | T
           | {
+              anchor?: T;
               backgroundImage?: T;
               lowResBackgroundImageBase64?: T;
               title?: T;

@@ -32,12 +32,21 @@ export const MapBlock = ({
         showDivider={showDivider}
         activeMission={activeMission}
       />
-      <MapBlockClient
-        anchor={anchor}
-        center={[latitude, longitude]}
-        zoom={zoomLevel}
-        height={mapHeight}
-      />
+      <div
+        id={anchor}
+        style={{
+          position: 'relative',
+          height: 'calc(100vh - 120px)',
+          maxHeight: '100vh',
+        }}
+      >
+        <MapBlockClient
+          anchor={anchor}
+          center={[latitude, longitude]}
+          zoom={zoomLevel}
+          height={mapHeight}
+        />
+      </div>
     </>
   )
 }

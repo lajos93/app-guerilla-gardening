@@ -114,14 +114,7 @@ export function MapBlockClient({
   })
 
   return (
-    <div
-      id={anchor}
-      style={{
-        position: 'relative',
-        height: 'calc(100vh - 120px)', // a -120px az a header/footer miatt kell
-        maxHeight: '100vh',
-      }}
-    >
+    <>
       {/* Overlay filters */}
       <div
         style={{
@@ -169,6 +162,6 @@ export function MapBlockClient({
           <GlifyLayer map={mapRef.current} trees={filteredTrees} />
         )}
       </MapContainer>
-    </div>
+    </>
   )
 }

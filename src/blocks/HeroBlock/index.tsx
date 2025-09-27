@@ -4,6 +4,7 @@ import type { HeroType } from './types'
 import { isMedia } from '@/utils/isMedia'
 
 export async function HeroBlock({
+  anchor,
   logo,
   backgroundImage,
   lowResBackgroundImageBase64,
@@ -13,10 +14,8 @@ export async function HeroBlock({
 }: HeroType) {
   const aspectRatio = backgroundImage.width / backgroundImage.height
 
-  console.log('logo', logo)
-
   return (
-    <section className="relative w-full">
+    <section id={anchor} className="relative w-full">
       {/* Container to maintain image aspect ratio */}
       <div
         className="w-full"
