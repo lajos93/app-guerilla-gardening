@@ -129,6 +129,9 @@ importers:
       '@types/leaflet':
         specifier: ^1.9.18
         version: 1.9.20
+      '@types/lodash':
+        specifier: ^4.17.20
+        version: 4.17.20
       '@types/node':
         specifier: ^22.5.4
         version: 22.18.6
