@@ -1,40 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3'
-import { S3_CONFIG } from '@/config/s3'
+import { fetchTile } from '@/lib/s3'
 
-const s3 = new S3Client({
-  region: S3_CONFIG.region,
-  credentials: {
-    accessKeyId: S3_CONFIG.accessKeyId!,
-    secretAccessKey: S3_CONFIG.secretAccessKey!,
-  },
-})
-
-export async function GET(req: NextRequest, context: { params: any }) {
-  const params = await context.params
-  const { z, x, y } = params
-
+export async function GET(
+  _: Request,
+  context: { params: Promise<{ z: string; x: string; y: string }> },
+) {
+  const { z, x, y } = await context.params
   const key = `tiles/${z}/${x}/${y}.avif`
-
-  try {
-    const command = new GetObjectCommand({
-      Bucket: S3_CONFIG.bucket,
-      Key: key,
-    })
-
-    const data = await s3.send(command)
-    const body = await data.Body?.transformToWebStream() // For AWS SDK v3
-
-    if (!body) return new NextResponse('Tile not found', { status: 404 })
-
-    const arrayBuffer = await new Response(body).arrayBuffer()
-
-    return new NextResponse(arrayBuffer, {
-      status: 200,
-      headers: { 'Content-Type': 'image/avif' },
-    })
-  } catch (err) {
-    console.error(err)
-    return new NextResponse('Tile not found', { status: 404 })
-  }
+  return fetchTile(key)
 }

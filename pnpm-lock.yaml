@@ -84,8 +84,8 @@ importers:
         specifier: ^3.3.1
         version: 3.3.1(leaflet@1.9.4)
       lexical:
-        specifier: ^0.36.1
-        version: 0.36.1
+        specifier: 0.28.0
+        version: 0.28.0
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -3614,9 +3614,6 @@ packages:
 
   lexical@0.28.0:
     resolution: {integrity: sha512-dLE3O1PZg0TlZxRQo9YDpjCjDUj8zluGyBO9MHdjo21qZmMUNrxQPeCRt8fn2s5l4HKYFQ1YNgl7k1pOJB/vZQ==}
-
-  lexical@0.36.1:
-    resolution: {integrity: sha512-VD/rxRp40IvaKGgD+AfWAEPzovm7RTEp++j0P96iaBgiUAq8tDdW3GvPwA5pLk83aQZ5IV10jzEIvzAJkLw+pA==}
 
   lib0@0.2.114:
     resolution: {integrity: sha512-gcxmNFzA4hv8UYi8j43uPlQ7CGcyMJ2KQb5kZASw6SnAKAf10hK12i2fjrS3Cl/ugZa5Ui6WwIu1/6MIXiHttQ==}
@@ -9011,8 +9008,6 @@ snapshots:
       type-check: 0.4.0
 
   lexical@0.28.0: {}
-
-  lexical@0.36.1: {}
 
   lib0@0.2.114:
     dependencies:

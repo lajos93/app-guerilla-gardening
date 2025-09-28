@@ -14,7 +14,6 @@ import Loader from '../../../components/loader'
 import './style.css'
 import { Filters, MapFilters } from '../Filter'
 
-// dynamic import, ssr false
 const GlifyLayer = dynamic(() => import('./Helpers/GlifyLayer').then((mod) => mod.GlifyLayer), {
   ssr: false,
 })
@@ -80,37 +79,7 @@ export function MapBlockClient({
   const zoomThreshold = 16
 
   const filteredTrees = trees.filter((tree) => {
-    /* const matchPriority =
-      filters.prioritySpecies.length === 0 ||
-      filters.prioritySpecies.includes(tree.speciesCategoryId)
-
-    const matchCategory =
-      filters.speciesCategories.length === 0 ||
-      filters.speciesCategories.includes(tree.speciesCategoryId)
-
-    const matchGroup =
-      filters.categoryGroups.length === 0 ||
-      filters.categoryGroups.includes(tree.categoryGroupId)
-
-    const matchSearch =
-      filters.search === '' ||
-      tree.speciesName?.toLowerCase().includes(filters.search.toLowerCase())
-
-    const matchYear =
-      filters.year.length === 0 || (tree.year && tree.year >= filters.year[0])
-
-    const matchDistrict =
-      !filters.district || tree.district === filters.district
-
-    return (
-      matchPriority &&
-      matchCategory &&
-      matchGroup &&
-      matchSearch &&
-      matchYear &&
-      matchDistrict
-    ) */
-    return tree
+    return tree // ide jöhet a filter logika ha kell
   })
 
   return (
@@ -148,10 +117,19 @@ export function MapBlockClient({
           }}
         />
 
+        {/* alap OSM réteg */}
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
+        {/* saját tile réteg (default vagy kategóriás) */}
         {currentZoom <= zoomThreshold && (
-          <TileLayer url="/api/tiles/{z}/{x}/{y}" maxZoom={zoomThreshold} />
+          <TileLayer
+            url={
+              filters.speciesCategories.length > 0
+                ? `/api/tiles/category/${encodeURIComponent(filters.speciesCategories[0])}/{z}/{x}/{y}`
+                : `/api/tiles/{z}/{x}/{y}`
+            }
+            maxZoom={zoomThreshold}
+          />
         )}
 
         {currentZoom > zoomThreshold && isLoading && (
