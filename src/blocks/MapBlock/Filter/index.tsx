@@ -6,13 +6,6 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { Checkbox } from '@/components/ui/checkbox'
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 
 export type Filters = {
@@ -40,21 +33,22 @@ type Species = {
 
 export function MapFilters({ onChange }: { onChange: (filters: Filters) => void }) {
   const [search, setSearch] = useState('')
-  const [selectedSpecies, setSelectedSpecies] = useState<Species[]>([])
+  const [selectedSpecies, setSelectedSpecies] = useState<Species[]>([]) // kereső chip-ek
   const [prioritySpecies, setPrioritySpecies] = useState<string[]>([])
   const [categoryGroups, setCategoryGroups] = useState<string[]>([])
   const [year, setYear] = useState([2000])
   const [district, setDistrict] = useState('')
   const [isOpen, setIsOpen] = useState(false)
 
+  // ÚJ: csak 1 kategória lehet kiválasztva
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+
   // species-categories fetch
   const {
     data: categoriesData,
     isLoading,
     error,
-  } = useQuery<{
-    docs: SpeciesCategory[]
-  }>({
+  } = useQuery<{ docs: SpeciesCategory[] }>({
     queryKey: ['species-categories'],
     queryFn: async () => {
       const url = `/api/species-categories?limit=50&sort=name`
@@ -67,12 +61,8 @@ export function MapFilters({ onChange }: { onChange: (filters: Filters) => void 
   const speciesCategories = categoriesData?.docs ?? []
   const allGroups = Array.from(new Set(speciesCategories.map((s) => s.group?.name).filter(Boolean)))
 
-  // species search (search barhoz)
-  const { data: speciesSearchResults = [] } = useQuery<
-    { docs: Species[] }, // queryFn visszatérési típus
-    Error,
-    Species[] // select utáni "data" típus
-  >({
+  // species search
+  const { data: speciesSearchResults = [] } = useQuery<{ docs: Species[] }, Error, Species[]>({
     queryKey: ['species', search],
     queryFn: async () => {
       const url = `/api/species?limit=20&where[or][0][name][like]=${search}&where[or][1][latinName][like]=${search}`
@@ -81,7 +71,7 @@ export function MapFilters({ onChange }: { onChange: (filters: Filters) => void 
       return res.json()
     },
     enabled: !!search,
-    select: (data) => data.docs, // innen jön a Species[]
+    select: (data) => data.docs,
   })
 
   const toggleItem = (
@@ -104,7 +94,7 @@ export function MapFilters({ onChange }: { onChange: (filters: Filters) => void 
     onChange({
       search,
       prioritySpecies,
-      speciesCategories: speciesCategories.map((s) => s.name),
+      speciesCategories: selectedCategory ? [selectedCategory] : [], // max 1 kategória
       categoryGroups,
       year,
       district,
@@ -133,7 +123,7 @@ export function MapFilters({ onChange }: { onChange: (filters: Filters) => void 
           }}
         />
 
-        {/* kiválasztott fajok chipként */}
+        {/* Selected item */}
         {selectedSpecies.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-2">
             {selectedSpecies.map((s) => (
@@ -169,17 +159,17 @@ export function MapFilters({ onChange }: { onChange: (filters: Filters) => void 
         )}
       </div>
 
-      {/* Összes faj lista (gombokkal) */}
+      {/* Categories */}
       <div>
-        <Label className="text-xs text-gray-500 uppercase">Fajok</Label>
+        <Label className="text-xs text-gray-500 uppercase">Kategória</Label>
         <div className="flex flex-wrap gap-2 mt-2">
           {speciesCategories.map((item) => (
             <Button
               key={item.id}
-              variant={prioritySpecies.includes(item.name) ? 'default' : 'outline'}
+              variant={selectedCategory === item.name ? 'default' : 'outline'}
               size="sm"
               className="rounded-full"
-              onClick={() => toggleItem(prioritySpecies, setPrioritySpecies, item.name)}
+              onClick={() => setSelectedCategory(item.name)}
             >
               {item.name}
             </Button>
@@ -210,21 +200,6 @@ export function MapFilters({ onChange }: { onChange: (filters: Filters) => void 
           <Slider min={1900} max={2025} step={1} value={year} onValueChange={setYear} />
           <div className="text-xs text-gray-500 mt-1">{year[0]}+</div>
         </div>
-      </div>
-
-      {/* District filter */}
-      <div>
-        <Label className="text-xs text-gray-500 uppercase">Körzet</Label>
-        <Select value={district} onValueChange={setDistrict}>
-          <SelectTrigger className="mt-2">
-            <SelectValue placeholder="Válassz" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="I">I. kerület</SelectItem>
-            <SelectItem value="II">II. kerület</SelectItem>
-            <SelectItem value="III">III. kerület</SelectItem>
-          </SelectContent>
-        </Select>
       </div>
 
       {/* Apply button */}
