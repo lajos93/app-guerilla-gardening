@@ -277,6 +277,7 @@ export interface Page {
         | {
             anchor?: string | null;
             backgroundImage: number | Media;
+            mobileBackgroundImage?: (number | null) | Media;
             lowResBackgroundImageBase64?: string | null;
             title: string;
             subtitle?: string | null;
@@ -603,6 +604,7 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               anchor?: T;
               backgroundImage?: T;
+              mobileBackgroundImage?: T;
               lowResBackgroundImageBase64?: T;
               title?: T;
               subtitle?: T;

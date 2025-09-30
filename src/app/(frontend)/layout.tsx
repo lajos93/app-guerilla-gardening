@@ -3,9 +3,9 @@ import './globals.css'
 import './styles.css'
 import { Providers } from './providers'
 import { getTheme } from '@/lib/getTheme'
-import { Header } from '../../components/layout/Header'
 import { getNavigation } from '../../lib/getNavigation'
 import { getLogo } from '../../lib/getLogo'
+import { HeaderWrapper } from '../../components/layout/HeaderWrapper'
 
 export const metadata = {
   description: 'A blank template using Payload in a Next.js app.',
@@ -33,7 +33,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         }}
       >
         <Providers>
-          <Header navigation={navigation} logo={logo} />
+          <HeaderWrapper navigation={navigation} logo={logo} />
           <main>{children}</main>
         </Providers>
       </body>

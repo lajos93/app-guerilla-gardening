@@ -11,7 +11,7 @@ import { useScrollSpy } from '../../hooks/useScrollSpy'
 type NavItem = { id: string | number; label: string; url: string }
 type HeaderProps = { navigation: NavItem[]; logo: Logo }
 
-export function Header({ navigation, logo }: HeaderProps) {
+export function HeaderDesktop({ navigation, logo }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -22,8 +22,8 @@ export function Header({ navigation, logo }: HeaderProps) {
 
   const activeId = useScrollSpy(
     navigation.map((n) => n.url),
-    80, // header height
-    120, // it has to switch a bit earlier because of the padding-top on sections
+    80,
+    120,
   )
 
   return (
@@ -34,7 +34,9 @@ export function Header({ navigation, logo }: HeaderProps) {
     >
       <div className="mx-auto px-12 flex items-center justify-between h-14">
         <div
-          className={`transition-all duration-300 ${scrolled ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}
+          className={`transition-all duration-300 ${
+            scrolled ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
+          }`}
         >
           {isMedia(logo.logo) && (
             <Image src={logo.logo.url} alt={logo.altText} width={40} height={40} />

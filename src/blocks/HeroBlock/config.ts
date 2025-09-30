@@ -15,6 +15,12 @@ const HeroBlock: Block = {
       required: true,
     },
     {
+      name: 'mobileBackgroundImage',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Background Image (Mobile)',
+    },
+    {
       name: 'lowResBackgroundImageBase64',
       type: 'text',
     },

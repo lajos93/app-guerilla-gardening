@@ -16,7 +16,12 @@ export const MapBlockHeader = ({
         <div>
           <h3
             style={{ color: titleTextColor }}
-            className="font-californian text-2xl text-white pl-40 pr-40 pt-12 pb-4"
+            className="
+              font-californian 
+              text-lg sm:text-xl md:text-2xl
+              px-6 sm:px-10 md:px-20 lg:px-40
+              pt-8 md:pt-12 pb-3 md:pb-4
+            "
           >
             {activeMission.title}
           </h3>
@@ -24,7 +29,12 @@ export const MapBlockHeader = ({
           {activeMission.extendedTitle && (
             <h2
               style={{ color: extendedTitleTextColor }}
-              className="font-californian text-5xl text-white pl-40 pr-40 pb-8"
+              className="
+                font-californian 
+                text-2xl sm:text-3xl md:text-5xl 
+                px-6 sm:px-10 md:px-20 lg:px-40
+                pb-6 md:pb-8
+              "
             >
               {activeMission.extendedTitle}
             </h2>

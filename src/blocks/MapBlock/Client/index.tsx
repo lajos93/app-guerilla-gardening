@@ -13,6 +13,7 @@ import Loader from '../../../components/loader'
 
 import './style.css'
 import { Filters, MapFilters } from '../Filter'
+import { FiltersWrapper } from '../Filter/Wrapper'
 
 const GlifyLayer = dynamic(() => import('./Helpers/GlifyLayer').then((mod) => mod.GlifyLayer), {
   ssr: false,
@@ -93,7 +94,7 @@ export function MapBlockClient({
           zIndex: 1000,
         }}
       >
-        <MapFilters onChange={setFilters} />
+        <FiltersWrapper onChange={setFilters} />
         <div className="text-xs text-gray-500 mt-2">
           Zoom: {currentZoom}, Fák: {filteredTrees.length}
         </div>

@@ -10,6 +10,12 @@ export type HeroType = {
   }
   logo?: Logo
   lowResBackgroundImageBase64?: string
+  mobileBackgroundImage?: {
+    filename: string
+    url: string
+    width: number
+    height: number
+  }
   title: string
   subtitle?: string
   ctaButtons: {
