@@ -14,6 +14,7 @@ import { Trees } from './collections/Trees'
 import { Pages } from './collections/Pages'
 import { Sections } from './collections/Sections'
 import { SpeciesCategories } from './collections/Species-Categories'
+import { SpeciesCategoryIcons } from './collections/Species-Categories/Icons'
 import { CategoryGroups } from './collections/Category-Groups'
 
 import { S3_CONFIG } from './config/s3'
@@ -40,6 +41,7 @@ export default buildConfig({
     Pages,
     Sections,
     SpeciesCategories,
+    SpeciesCategoryIcons,
     CategoryGroups,
   ],
   globals: [Logo, Theme],
@@ -58,6 +60,7 @@ export default buildConfig({
     s3Storage({
       collections: {
         media: { prefix: 'images' },
+        'species-category-icons': { prefix: 'species-category-icons' },
       },
       bucket: S3_CONFIG.bucket,
       config: {

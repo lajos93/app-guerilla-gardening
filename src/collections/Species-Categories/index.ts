@@ -31,6 +31,12 @@ export const SpeciesCategories: CollectionConfig = {
       type: 'checkbox',
     },
     {
+      name: 'icon',
+      type: 'upload',
+      relationTo: 'species-category-icons',
+      label: 'Category Icon',
+    },
+    {
       name: 'group',
       type: 'relationship',
       relationTo: 'category-groups',

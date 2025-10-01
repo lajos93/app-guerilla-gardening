@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import searchSpeciesHandler from '../endpoints/searchCategoriesHandler'
 
 export const Species: CollectionConfig = {
   slug: 'species',
@@ -40,6 +41,13 @@ export const Species: CollectionConfig = {
       type: 'relationship',
       relationTo: 'species-categories',
       // required:true
+    },
+  ],
+  endpoints: [
+    {
+      path: '/search',
+      method: 'get',
+      handler: searchSpeciesHandler,
     },
   ],
 }

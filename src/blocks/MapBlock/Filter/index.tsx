@@ -65,7 +65,7 @@ export function MapFilters({ onChange }: { onChange: (filters: Filters) => void 
   const { data: speciesSearchResults = [] } = useQuery<{ docs: Species[] }, Error, Species[]>({
     queryKey: ['species', search],
     queryFn: async () => {
-      const url = `/api/species?limit=20&where[or][0][name][like]=${search}&where[or][1][latinName][like]=${search}`
+      const url = `/api/species?limit=20&where[name][ilike]=%${search}%`
       const res = await fetch(url)
       if (!res.ok) throw new Error('Hiba a keresésnél')
       return res.json()

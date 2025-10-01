@@ -103,6 +103,7 @@ export function MapBlockClient({
       <MapContainer
         center={center}
         zoom={zoom}
+        minZoom={zoom}
         style={{ height: '100%', width: '100%' }}
         ref={mapRef}
       >

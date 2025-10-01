@@ -75,6 +75,7 @@ export interface Config {
     pages: Page;
     sections: Section;
     'species-categories': SpeciesCategory;
+    'species-category-icons': SpeciesCategoryIcon;
     'category-groups': CategoryGroup;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -90,6 +91,7 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     sections: SectionsSelect<false> | SectionsSelect<true>;
     'species-categories': SpeciesCategoriesSelect<false> | SpeciesCategoriesSelect<true>;
+    'species-category-icons': SpeciesCategoryIconsSelect<false> | SpeciesCategoryIconsSelect<true>;
     'category-groups': CategoryGroupsSelect<false> | CategoryGroupsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -213,9 +215,39 @@ export interface SpeciesCategory {
   name: string;
   latinName: string;
   isPriority?: boolean | null;
+  icon?: (number | null) | SpeciesCategoryIcon;
   group?: (number | null) | CategoryGroup;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "species-category-icons".
+ */
+export interface SpeciesCategoryIcon {
+  id: number;
+  prefix?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    icon?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -442,6 +474,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'species-categories';
         value: number | SpeciesCategory;
+      } | null)
+    | ({
+        relationTo: 'species-category-icons';
+        value: number | SpeciesCategoryIcon;
       } | null)
     | ({
         relationTo: 'category-groups';
@@ -717,9 +753,42 @@ export interface SpeciesCategoriesSelect<T extends boolean = true> {
   name?: T;
   latinName?: T;
   isPriority?: T;
+  icon?: T;
   group?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "species-category-icons_select".
+ */
+export interface SpeciesCategoryIconsSelect<T extends boolean = true> {
+  prefix?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        icon?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
