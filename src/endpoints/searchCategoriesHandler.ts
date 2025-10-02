@@ -15,7 +15,7 @@ const searchSpeciesHandler: PayloadHandler = async ({ payload, query }) => {
       where: {
         or: [{ name: { like: search } }, { latinName: { like: search } }],
       },
-      depth: 0,
+      depth: 2,
       limit: 50,
     })
 

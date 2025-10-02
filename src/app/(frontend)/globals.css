@@ -6,6 +6,27 @@ html {
   scroll-behavior: smooth;
 }
 
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes borderSpin {
+  to {
+    --angle: 360deg;
+  }
+}
+
+.animated-border {
+  position: relative;
+  border: 2px solid transparent;
+  border-radius: 0.75rem; /* rounded-xl */
+  background:
+    linear-gradient(white, white) padding-box,
+    conic-gradient(from var(--angle), #22c55e 0%, transparent 100%) border-box;
+  animation: borderSpin 1s linear forwards;
+}
 @custom-variant dark (&:is(.dark *));
 
 @theme {
