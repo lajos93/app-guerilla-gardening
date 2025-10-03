@@ -108,7 +108,7 @@ export interface Config {
     logo: LogoSelect<false> | LogoSelect<true>;
     theme: ThemeSelect<false> | ThemeSelect<true>;
   };
-  locale: null;
+  locale: 'hu' | 'en';
   user: User & {
     collection: 'users';
   };

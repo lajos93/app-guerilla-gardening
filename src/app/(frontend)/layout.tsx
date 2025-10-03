@@ -1,3 +1,4 @@
+// app/layout.tsx
 import React from 'react'
 import './globals.css'
 import './styles.css'
@@ -12,15 +13,21 @@ export const metadata = {
   title: 'Payload Blank Template',
 }
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
-  const { children } = props
+export default async function RootLayout({
+  children,
+  searchParams,
+}: {
+  children: React.ReactNode
+  searchParams: { lang?: string }
+}) {
+  const lang = (searchParams?.lang as 'hu' | 'en') || 'hu'
 
   const theme = await getTheme()
-  const navigation = await getNavigation()
+  const navigation = await getNavigation(lang)
   const logo = await getLogo()
 
   return (
-    <html lang="en">
+    <html lang={lang}>
       <body
         style={{
           ['--primary' as any]: theme.primary,

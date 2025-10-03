@@ -19,10 +19,12 @@ export const Sections: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'extendedTitle',
       type: 'text',
+      localized: true,
     },
     {
       name: 'slug',
@@ -60,6 +62,7 @@ export const Sections: CollectionConfig = {
       name: 'description',
       type: 'text',
       label: 'Description',
+      localized: true,
     },
     {
       name: 'seo',

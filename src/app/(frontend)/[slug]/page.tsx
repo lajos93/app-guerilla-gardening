@@ -1,24 +1,25 @@
-import React from 'react'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
-import { Block, RenderBlocks } from '../../../blocks/RenderBlocks'
+import { RenderBlocks, Block } from '../../../blocks/RenderBlocks'
 
-type Props = {
-  params: Promise<{ slug: string }>
-}
-
-export default async function Page({ params }: Props) {
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: { slug: string }
+  searchParams: { lang?: string }
+}) {
   const payload = await getPayload({ config })
-  const { slug } = await params
+
+  const lang = (searchParams.lang as 'hu' | 'en') || 'hu'
 
   const result = await payload.find({
     collection: 'pages',
     where: {
-      slug: {
-        equals: slug,
-      },
+      slug: { equals: params.slug },
     },
     limit: 1,
+    locale: lang,
   })
 
   const page = result.docs[0]
@@ -27,9 +28,5 @@ export default async function Page({ params }: Props) {
     return <h1>Page not found</h1>
   }
 
-  return (
-    <>
-      <RenderBlocks blocks={page.layout as Block[]} />
-    </>
-  )
+  return <RenderBlocks blocks={page.layout as Block[]} />
 }

@@ -11,6 +11,7 @@ const Navigation: CollectionConfig = {
       name: 'label',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'url',

@@ -32,6 +32,10 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
+  localization: {
+    locales: ['hu', 'en'],
+    defaultLocale: 'hu',
+  },
   collections: [
     Navigation,
     Users,

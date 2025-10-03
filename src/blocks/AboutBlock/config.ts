@@ -18,14 +18,17 @@ const AboutBlock: Block = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'titleHighlight',
       type: 'text',
+      localized: true,
     },
     {
       name: 'richDescription',
       type: 'richText',
+      localized: true,
     },
   ],
 }

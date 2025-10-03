@@ -28,10 +28,12 @@ const HeroBlock: Block = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'subtitle',
       type: 'text',
+      localized: true,
     },
     {
       name: 'ctaButtons',
@@ -40,6 +42,7 @@ const HeroBlock: Block = {
         {
           name: 'label',
           type: 'text',
+          localized: true,
         },
         {
           name: 'target',

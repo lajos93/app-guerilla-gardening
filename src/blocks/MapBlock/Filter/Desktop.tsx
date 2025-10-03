@@ -81,7 +81,11 @@ export function FiltersDesktop({ onChange }: { onChange: (filters: Filters) => v
               return (
                 <button
                   key={item.id}
-                  onClick={() => selectCategory(item)}
+                  onClick={() => {
+                    selectCategory(item)
+                    setSearch('')
+                    setIsOpen(false)
+                  }}
                   className={`
                     relative flex flex-col items-center justify-center gap-2 p-3 rounded-xl border text-sm transition
                     ${active ? 'bg-green-50 border-green-500' : 'bg-white border-gray-200 hover:border-gray-400'}
